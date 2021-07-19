@@ -6,9 +6,9 @@ tags:
 //cover_image: https://direct_url_to_image.jpg
 --- 
 
-In this post, we'll learn about the Observer Pattern by creating a simple To-do application.
+In this post, we'll be learning about the Observer Pattern by creating a simple To-do application.
 
-In a nutshell, the Observer Pattern is similar to Twitter's _Followers_ feature. When you post a tweet, all your followers get notified, and they decide whether to read the tweet or not. We can say our _Followers_ are observing our tweets.
+In a nutshell, the Observer Pattern is similar to Twitter's _Followers_ feature. When you post a tweet, all your followers get notified, and they decide whether to read your tweet or not. We can say our _Followers_ are observing our tweets.
 
 The Observer Pattern has only two components. The _Subject_ and the _Observers_. The _Observers_ only want to know when we update the _Subject_. They don't care when it happens.
 
@@ -42,9 +42,9 @@ Let's create the HTML of our Todo app.
 </html>
 ```
 
-In this HTML, we have an un-ordered list element which will hold our todo items, and a form element to add a todo item to our list.
+In this HTML, we have an un-ordered list element which will hold our todo items, a form element to add a todo item to our list, and finally a `script` element to hold our JavaScript code.
 
-The _Subject_ will be our todo items. Let's create an array list to store our todos.
+The _Subject_ will be our todo items. So we create an array list to store our todos.
 
 ```html
 <script>
@@ -61,7 +61,7 @@ Next we create a list of Observers. (Basically a list of our Todo followers).
 </script>
 ```
 
-Then we implement add todo functionality. Each todo needs to be unique, so we'll be using the current timestamp to uniquely identify them.
+Then we implement the add todo functionality. Each todo needs to be unique, so we'll be using the current timestamp to uniquely identify each item.
 
 ```js
 const form = document.querySelector("form");
@@ -83,7 +83,7 @@ function addTodo(item) {
 
 ## Introducing our first observer
 
-When you try running our simple app, you'll notice nothing is being displayed on screen. That's because we haven't hooked up our `todos` array to our HTML un-ordered list.
+When you try running the app, you'll notice nothing is being displayed on screen. That's because we haven't hooked up our `todos` array to our HTML un-ordered list element.
 
 Our HTML `ul` element is interested in our `todos` array. It wants to observe our array list, so that it can display it on screen. Lets implement a function that will display our list.
 
@@ -98,7 +98,7 @@ function displayTodos() {
 }
 ```
 
-Now, to register as an observer is simple. We just have to add the `displayTodos` to our list of `observers`. To do that we create a function to `register` new observers.
+Now, we register this function as an _Observer_ by adding it to our list of `observers`. To do that we create a helper function to `register` new observers.
 
 ```js
 function registerObserver(observer) {
@@ -109,8 +109,8 @@ function registerObserver(observer) {
 registerObserver(displayTodos);
 ```
 
-Despite registering as an observer, nothing is being displayed on the screen. That's because our `todos` array hasn't notified the observers.
-We create a `notifyObservers` function that will loop through our `observers` array and call each `observer` function.
+Despite registering as an observer, nothing is being displayed. That's because our `todos` array hasn't notified the observers.
+We create a `notifyObservers` function that will loop through our `observers` array and call each `observer` function to know an update has happended.
 
 ```js
 function notifyObservers() {
@@ -118,7 +118,7 @@ function notifyObservers() {
 }
 ```
 
-Then, we call the `notifyObservers` function in the `addTodo` function we created earlier.
+Then, we call the `notifyObservers` function whenever we change the _Subject_.
 
 ```js
 function addTodo(item) {
@@ -126,6 +126,8 @@ function addTodo(item) {
   notifyObservers(); // Add this line
 }
 ```
+
+Now, run the app in your browser and see your todos being added to the list.
 
 ## Congratulations on your first bug 🥳
 
