@@ -186,8 +186,7 @@ li.appendChild(button)
 
 ## Introducing the second observer
 
-With the add/remove features working, the final step is to prevent our todos from clearing on page reload. To do that, we save our list in local storage any time we modify the list, and load the saved list any time we reload the page.
-We want our local storage to be an observer, and save the list whenever it is notified.
+The final step is to save our list in local storage and load it when we reload the page. We want our local storage to be an observer, and save the list whenever it is notified.
 
 ```js
 function persistData() {
