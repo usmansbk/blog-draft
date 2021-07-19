@@ -220,7 +220,7 @@ Let us start by wrapping our state logic in a function and exposing the `registe
 Our `todos` array is no longer visible to the UI logic code. So we create the `getTodos` method for accessing the `todos`. This is called _Encapsulation_. The art of hiding internal state and exposing it via a method.
 
 ```js
-function createSuject() {
+function createSubject() {
     let todos = [];
     let observers = [];
 
