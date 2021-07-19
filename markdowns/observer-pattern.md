@@ -42,7 +42,7 @@ Let's create the HTML of our Todo app.
 </html>
 ```
 
-In this HTML, we have an un-ordered list element which will hold our todo items, a form element to add a todo item to our list, and finally a `script` element to hold our JavaScript code.
+In this HTML, we have an unordered list element which will hold our todo items, a form element to add a todo item to our list, and finally a `script` element to hold our JavaScript code.
 
 The _Subject_ will be our todo items. So we create an array list to store our todos.
 
@@ -110,7 +110,7 @@ registerObserver(displayTodos);
 ```
 
 Despite registering as an observer, nothing is being displayed. That's because our `todos` array hasn't notified the observers.
-We create a `notifyObservers` function that will loop through our `observers` array and call each `observer` function to know an update has happended.
+We create a `notifyObservers` function that will loop through our `observers` array and call each `observer` function to know an update has happened.
 
 ```js
 function notifyObservers() {
@@ -131,14 +131,14 @@ Now, run the app in your browser and see your todos being added to the list.
 
 ## Congratulations on your first bug 🥳
 
-You've probably noticed that our list doubles every time we add a new item. That's because we keep appending to our `ul` element without clearing the previous items. Here's the code to fix that:
+You've probably noticed that our list doubles every time we add a new item. We can fix that by clearing the list first.
 
 ```js
-    // Inside the displayTodos function
+// Inside the displayTodos function
 
-    function displayTodos() {
-      const ul = document.querySelector('ul');
-      ul.innerHTML = ''; // Add this line
+function displayTodos() {
+    const ul = document.querySelector('ul');
+    ul.innerHTML = ''; // Add this line
 ```
 
 Now that we have the add functionality working, it's time to remove todos.
