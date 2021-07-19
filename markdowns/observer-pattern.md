@@ -61,7 +61,7 @@ Next we create a list of Observers. (Basically a list of our Todo followers).
 </script>
 ```
 
-Then we implement the add todo functionality. Each todo needs to be unique, so we'll be using the current timestamp to uniquely identify each item.
+Then, we implement the add todo functionality. Each todo needs to be uniquely identified, so assign each item with an ID.
 
 ```js
 const form = document.querySelector("form");
@@ -83,7 +83,7 @@ function addTodo(item) {
 
 ## Introducing our first observer
 
-When you try running the app, you'll notice nothing is being displayed on screen. That's because we haven't hooked up our `todos` array to our HTML un-ordered list element.
+When you try running the app, you'll notice nothing is being displayed on screen. That's because we haven't hooked up our `todos` array to our HTML unordered list element.
 
 Our HTML `ul` element is interested in our `todos` array. It wants to observe our array list, so that it can display it on screen. Lets implement a function that will display our list.
 
