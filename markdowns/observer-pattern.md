@@ -52,7 +52,7 @@ The _Subject_ will be our todo items. So we create an array list to store our to
 </script>
 ```
 
-Next we create a list of Observers. (Basically a list of our Todo followers).
+Next we create a list of Observers. (Functions that will make use of the list).
 
 ```html
 <script>
@@ -85,7 +85,7 @@ function addTodo(item) {
 
 When you try running the app, you'll notice nothing is being displayed on screen. That's because we haven't hooked up our `todos` array to our HTML unordered list element.
 
-Our HTML `ul` element is interested in our `todos` array. It wants to observe our array list, so that it can display it on screen. Lets implement a function that will display our list.
+Our HTML `ul` element is interested in our `todos` array. It wants to observe our array list so that it can display it on the screen. So it wants to be an Observer. Let's implement a function that will display our list.
 
 ```js
 function displayTodos() {
