@@ -122,3 +122,5 @@ li.addEventListener("drop", (event) => {
   console.log("dropped item index", droppedIndex);
 });
 ```
+
+Now, try dragging and dropping an item. Check your console. If you're lucky, you'll see an output. But if you're unlucky like me, then allow me to explain.
