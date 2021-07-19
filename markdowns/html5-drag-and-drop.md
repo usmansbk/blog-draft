@@ -117,9 +117,10 @@ So, how does an item know something is being dropped on it? Every draggable elem
 ```js
 // After the dragstart listener
 li.addEventListener("drop", (event) => {
-  const droppedIndex = event.dataTransfer.getData("index");
-  console.log("current item index", item.index);
-  console.log("dropped item index", droppedIndex);
+  const draggedIndex = event.dataTransfer.getData("index"); // item being dragged
+  const dropIndex = item.index; // item we're dropping on
+  console.log("dragging", draggedIndex);
+  console.log("dropping on", dropIndex);
 });
 ```
 
@@ -133,5 +134,39 @@ Any element that wants to allow the dropping of dragged-over items needs to prev
 // After the drop listener
 li.addEventListener("dragover", (event) => {
   event.preventDefault();
+});
+```
+
+Try testing the code again, and it should work on any browser.
+
+Now that we can drag and drop, the final step is to swap positions instead of logging to console. For that we create a `swap` function.
+
+```js
+function swap(draggedIndex, dropIndex) {
+  // We get the current items
+  const dragged = items[draggedIndex];
+  const drop = items[dropIndex];
+
+  // We swap their positions
+  items[draggedIndex] = drop;
+  items[dropIndex] = dragged;
+
+  // Update their indexes to reflect their new positions
+  dragged.index = dropIndex;
+  drop.index = draggedIndex;
+
+  // Then finally update the display
+  displayItems();
+}
+```
+
+Then we call the `swap` function instead of logging to console.
+
+```js
+li.addEventListener("drop", (event) => {
+  const draggedIndex = event.dataTransfer.getData("index"); // item being dragged
+  const dropIndex = item.index; // item we're dropping on
+
+  swap(draggedIndex, dropIndex);
 });
 ```
