@@ -49,6 +49,7 @@
           const dropIndex = item.index; // item we're dropping on
 
           swap(draggedIndex, dropIndex);
+          li.setAttribute("draggable", false);
         });
 
         li.addEventListener("dragover", (event) => {

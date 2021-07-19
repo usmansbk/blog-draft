@@ -18,10 +18,6 @@ Let's start simple. We'll structure the UI according to the header image. We onl
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sorting with Drag & Drop</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
-    />
   </head>
   <body>
     <ul></ul>
@@ -160,7 +156,7 @@ function swap(draggedIndex, dropIndex) {
 }
 ```
 
-Then we call the `swap` function instead of logging to console.
+Then we call the `swap` function instead of logging to console, then set the dropped item `draggable` attribute to false, to make sure items can only be dragged using the handle.
 
 ```js
 li.addEventListener("drop", (event) => {
@@ -168,5 +164,15 @@ li.addEventListener("drop", (event) => {
   const dropIndex = item.index; // item we're dropping on
 
   swap(draggedIndex, dropIndex);
+  li.setAttribute("draggable", false);
 });
 ```
+
+That's it! We now have a working drag-sort list.
+
+Here is a list of things you can try:
+
+- Hide the original dragging item on drag start to improve user experience.
+- Reduce the opacity of an item when dragging over.
+
+Happy Coding!
