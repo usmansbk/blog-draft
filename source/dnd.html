@@ -29,8 +29,9 @@
       },
     ];
 
-    window.addEventListener("load", () => {
+    function displayItems() {
       const ul = document.querySelector("ul");
+      ul.innerHTML = "";
       items.forEach((item) => {
         const li = document.createElement("li");
         li.innerText = item.title;
@@ -39,8 +40,16 @@
         dragHandle.innerText = "@";
         li.appendChild(dragHandle);
 
+        dragHandle.addEventListener("mousedown", () => {
+          li.setAttribute("draggable", true);
+        });
+
         ul.appendChild(li);
       });
+    }
+
+    window.addEventListener("load", () => {
+      displayItems();
     });
   </script>
 </html>

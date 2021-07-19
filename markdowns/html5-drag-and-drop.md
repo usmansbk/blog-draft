@@ -42,7 +42,7 @@ Let's start simple. We'll structure the UI according to the header image. We onl
       },
     ];
 
-    // We add more codes here
+    // We add more code here
   </script>
 </html>
 ```
@@ -50,8 +50,9 @@ Let's start simple. We'll structure the UI according to the header image. We onl
 First, we populate the unordered list with items. Each item has a button that will serve as the drag handle.
 
 ```js
-window.addEventListener("load", () => {
+function displayItems() {
   const ul = document.querySelector("ul");
+  ul.innerHTML = "";
   items.forEach((item) => {
     const li = document.createElement("li");
     li.innerText = item.title;
@@ -62,5 +63,42 @@ window.addEventListener("load", () => {
 
     ul.appendChild(li);
   });
+}
+
+window.addEventListener("load", () => {
+  displayItems();
 });
 ```
+
+To start dragging an item, we click and hold on a drag handle. The DOM event equivalent for that is the `mousedown` event.
+
+```js
+function displayItems() {
+  const ul = document.querySelector("ul");
+  items.forEach((item) => {
+    const li = document.createElement("li");
+    li.innerText = item.title;
+
+    const dragHandle = document.createElement("button");
+    dragHandle.innerText = "@";
+    li.appendChild(dragHandle);
+
+    // Equal to Click and Hold
+    dragHandle.addEventListener("mousedown", () => {
+      console.log("holding");
+    });
+
+    ul.appendChild(li);
+  });
+}
+```
+
+If you try dragging an item, you'll notice there is no indication of it being dragged around. By default, all links, text nodes, and image elements are draggable. For others, we tell the browser that an element can be dragged around by setting a `draggable` attribute.
+
+```js
+dragHandle.addEventListener("mousedown", () => {
+  li.setAttribute("draggable", true);
+});
+```
+
+Now try dragging an item around, and you'll see it highlighted.
