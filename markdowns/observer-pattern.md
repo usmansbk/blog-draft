@@ -196,7 +196,7 @@ function persistData() {
 registerObserver(persistData);
 ```
 
-Finally, we load the saved todos on page load.
+Then, we load the saved todos on page load.
 
 ```js
 function loadTodos() {
