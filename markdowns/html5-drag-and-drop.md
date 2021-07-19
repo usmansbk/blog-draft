@@ -124,3 +124,14 @@ li.addEventListener("drop", (event) => {
 ```
 
 Now, try dragging and dropping an item. Check your console. If you're lucky, you'll see an output. But if you're unlucky like me, then allow me to explain.
+
+When you grab an item and drag it into a different location without dropping it, it means you are dragging over. The browser locks every element we drag over to. Preventing us from dropping anything.
+
+Any element that wants to allow the dropping of dragged-over items needs to prevent the browser's default behavior.
+
+```js
+// After the drop listener
+li.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+```
