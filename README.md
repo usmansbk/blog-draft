@@ -2,6 +2,8 @@
 
 ## Personal Blog by Usman
 
+### Job Intro
+
 Hello everyone, my name is Usman and my goals are beyound your comprehension. XD Just kidding! I have a goal to work for a tech company and build projects that helps people.
 
 For the past 3 years, I have gained the knowledge of principles, patterns, and practices that a craftsman knows. I have grinded these knowledge into my muscles and soul by building 3 strong user interfaces and backend servers.
