@@ -135,7 +135,7 @@ li.addEventListener("dragover", (event) => {
 
 Try testing the code again, and it should work on any browser.
 
-Now that we can drag and drop, the final step is to swap positions instead of logging to console. For that we create a `swap` function.
+Now that we can drag and drop, the final step is to swap positions instead of logging to console. For that, we create a `swap` function.
 
 ```js
 function swap(draggedIndex, dropIndex) {
