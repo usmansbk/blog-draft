@@ -25,20 +25,20 @@ Let's create the HTML of our Todo app.
 ```html
 <!DOCTYPE html>
 <html>
-<head>
- <meta charset="utf-8">
- <title>Observer Pattern</title>
-</head>
-<body>
- <ul></ul>
- <form>
-  <input required type="text" />
-  <button type="submit">Add</button>
- </form>
-</body>
-<script>
-// We'll add all our code here
-</script>
+    <head>
+        <meta charset="utf-8">
+        <title>Observer Pattern</title>
+    </head>
+    <body>
+        <ul></ul>
+        <form>
+            <input required type="text" />
+            <button type="submit">Add</button>
+        </form>
+    </body>
+    <script>
+    // We'll add all our code here
+    </script>
 </html>
 ```
 
@@ -48,7 +48,7 @@ The _Subject_ will be our todo items. So we create an array list to store our to
 
 ```html
 <script>
-  let todos = []; // Subject
+    let todos = []; // Subject
 </script>
 ```
 
@@ -56,8 +56,8 @@ Next we create a list of Observers. (Functions that will make use of the list).
 
 ```html
 <script>
-  let todos = []; // Subject
-  let observers = [];
+    let todos = []; // Subject
+    let observers = [];
 </script>
 ```
 
@@ -66,18 +66,18 @@ Then, we implement the add todo functionality. Each todo needs to be uniquely id
 ```js
 const form = document.querySelector("form");
 form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const input = form.elements[0];
-  const item = {
-    id: Date.now(),
-    description: input.value,
-  };
-  addTodo(item);
-  input.value = ''; // Clear text input
+    event.preventDefault();
+    const input = form.elements[0];
+    const item = {
+        id: Date.now(),
+        description: input.value,
+    };
+    addTodo(item);
+    input.value = ''; // Clear text input
 });
 
 function addTodo(item) {
-  todos.push(item);
+    todos.push(item);
 }
 ```
 
@@ -89,12 +89,12 @@ Our HTML `ul` element is interested in our `todos` array. It wants to observe ou
 
 ```js
 function displayTodos() {
-   const ul = document.querySelector('ul');
-   todos.forEach((todo) => {
-     const li = document.createElement('li');
-     li.innerText = todo.description;
-     ul.appendChild(li);
-  });
+    const ul = document.querySelector('ul');
+    todos.forEach((todo) => {
+        const li = document.createElement('li');
+        li.innerText = todo.description;
+        ul.appendChild(li);
+    });
 }
 ```
 
@@ -102,8 +102,8 @@ Now, we register this function as an _Observer_ by adding it to our list of `obs
 
 ```js
 function registerObserver(observer) {
-  // The observers array is basically an array of functions
-  observers.push(observer);
+    // The observers array is basically an array of functions
+    observers.push(observer);
 }
 
 registerObserver(displayTodos);
@@ -114,7 +114,7 @@ We create a `notifyObservers` function that will loop through our `observers` ar
 
 ```js
 function notifyObservers() {
-  observers.forEach((observer) => observer());
+    observers.forEach((observer) => observer());
 }
 ```
 
@@ -122,8 +122,8 @@ Then, we call the `notifyObservers` function whenever we change the _Subject_.
 
 ```js
 function addTodo(item) {
-  todos.push(item);
-  notifyObservers(); // Add this line
+    todos.push(item);
+    notifyObservers(); // Add this line
 }
 ```
 
@@ -145,19 +145,19 @@ Now that we have "add" functionality working, it's time to remove todos. First, 
 
 ```js
 function displayTodos() {
-  const ul = document.querySelector('ul');
-  ul.innerHTML = '';
-  todos.forEach((todo) => {
-    const li = document.createElement('li');
-    li.innerText = todo.description;
+    const ul = document.querySelector('ul');
+    ul.innerHTML = '';
+    todos.forEach((todo) => {
+        const li = document.createElement('li');
+        li.innerText = todo.description;
 
-    // Add these lines
-    const button = document.createElement('button');
-    button.innerText = 'Remove';
-    li.appendChild(button);
+        // Add these lines
+        const button = document.createElement('button');
+        button.innerText = 'Remove';
+        li.appendChild(button);
 
-    ul.appendChild(li);
-  });
+        ul.appendChild(li);
+    });
 }
 ```
 
@@ -165,8 +165,8 @@ Then, we create a `removeTodo` function that will handle removing to-dos by thei
 
 ```js
 function removeTodo(id) {
-  todos = todos.filter((todo) => todo.id !== id);
-  notifyObservers();
+    todos = todos.filter((todo) => todo.id !== id);
+    notifyObservers();
 }
 ```
 
@@ -190,7 +190,7 @@ The final step is to save our list in local storage and load it when we reload t
 
 ```js
 function persistData() {
-  localStorage.setItem("saved-todos", JSON.stringify(todos));
+    localStorage.setItem("saved-todos", JSON.stringify(todos));
 }
 
 registerObserver(persistData);
@@ -200,15 +200,15 @@ Then, we load the saved todos on page load.
 
 ```js
 function loadTodos(todoList) {
-  todos = todoList;
-  notifyObservers();
+    todos = todoList;
+    notifyObservers();
 }
 
 window.addEventListener("load", () => {
-  const savedTodos = localStorage.getItem("saved-todos");
-  if (savedTodos) {
-    loadTodos(JSON.parse(savedTodos));
-  }
+    const savedTodos = localStorage.getItem("saved-todos");
+    if (savedTodos) {
+        loadTodos(JSON.parse(savedTodos));
+    }
 });
 ```
 
