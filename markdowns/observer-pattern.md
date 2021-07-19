@@ -131,7 +131,7 @@ Now, run the app in your browser and see your todos being added to the list.
 
 ## Congratulations on your first bug 🥳
 
-You've probably noticed that our list doubles every time we add a new item. We can fix that by clearing the list first.
+You've probably noticed that our list doubles every time we add a new item. We can fix that by clearing it first.
 
 ```js
 // Inside the displayTodos function
@@ -141,8 +141,7 @@ function displayTodos() {
     ul.innerHTML = ''; // Add this line
 ```
 
-Now that we have the add functionality working, it's time to remove todos.
-First, we give every single todo `li` element a remove `button`.
+Now that we have "add" functionality working, it's time to remove todos. First, we add a remove `button` to every `li` element.
 
 ```js
 function displayTodos() {
@@ -162,7 +161,7 @@ function displayTodos() {
 }
 ```
 
-Then, we create a `removeTodo` function that will remove a single todo with a given `id` from the `todos` list.
+Then, we create a `removeTodo` function that will handle removing to-dos by their ID.
 
 ```js
 function removeTodo(id) {
