@@ -199,15 +199,141 @@ registerObserver(persistData);
 Then, we load the saved todos on page load.
 
 ```js
-function loadTodos() {
-  const savedTodos = localStorage.getItem("saved-todos");
-  if (savedTodos) {
-    todos = JSON.parse(savedTodos);
-    notifyObservers();
-  }
+function loadTodos(todoList) {
+  todos = todoList;
+  notifyObservers();
 }
 
 window.addEventListener("load", () => {
-  loadTodos();
+  const savedTodos = localStorage.getItem("saved-todos");
+  if (savedTodos) {
+    loadTodos(JSON.parse(savedTodos));
+  }
 });
 ```
+
+## The Clean Code
+
+Our code is working. It meets the minimum requirements, but it's not elegant. If you follow closely, you'll notice there are 2 kinds of code. Those that manipulate the unordered list element and those that manipulate the `todos` array list. We are mixing UI logic and State logic, which is an attribute of a messy code.
+
+Let us start by wrapping our state logic in a function and exposing the `register`, `add`, `remove`, and `load` functions as methods. This is called _Abstraction_.
+Our `todos` array is no longer visible to the UI logic code. So we create the `getTodos` method for accessing the `todos`. This is called _Encapsulation_. The art of hiding internal state and exposing it via a method.
+
+```js
+function createSuject() {
+    let todos = [];
+    let observers = [];
+
+    function registerObserver(observer) {
+      observers.push(observer);
+    }
+
+    function notifyObservers() {
+      observers.forEach((observer) => observer());
+    }
+
+    function addTodo(item) {
+        todos.push(item);
+        notifyObservers();
+    }
+
+    function removeTodo(id) {
+      todos = todos.filter((todo) => todo.id !== id);
+      notifyObservers();
+    }
+
+    function loadTodos(todoList) {
+        todos = todoList;
+        notifyObservers();
+    }
+
+    function getState() {
+        return todos;
+    }
+
+    return {
+        registerObserver,
+        addTodo,
+        removeTodo,
+        loadTodos,
+        getState,
+    }
+}
+```
+
+Next we use the `createSubject` to create a todos subject.
+
+```js
+const subject = createSubject();
+
+function displayTodos() {
+    const ul = document.querySelector("ul");
+    ul.innerHTML = "";
+    todos.forEach((todo) => {
+        const li = document.createElement("li");
+        li.innerText = todo.description;
+
+        const button = document.createElement("button");
+        button.innerText = "Remove";
+        button.addEventListener("click", () => {
+            subject.removeTodo(todo.id);
+        });
+        li.appendChild(button);
+
+        ul.appendChild(li);
+    });
+}
+
+subject.registerObserver(displayTodos)
+
+subject.registerObserver(() => {
+    localStorage.setItem("saved-todos", JSON.stringify(todos));
+});
+
+window.addEventListener("load", () => {
+    const savedTodos = localStorage.getItem("saved-todos");
+    if (savedTodos) {
+        subject.loadTodos(JSON.parse(savedTodos));
+    }
+
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = form.elements[0];
+        const item = {
+        id: Date.now(),
+        description: input.value,
+        };
+        subject.addTodo(item);
+        input.value = "";
+    });
+});
+```
+
+The `createSubject` function adheres to the Observer Pattern design. We subscribe to the todos by registering as observers. What about if we no longer want to be notified?
+It's quite simple. We can return a function in the `registerObserver` method.
+
+```js
+function registerObserver(observer) {
+    observers.push(observer);
+
+    return function () {
+        observers = observers.filter((currentObserver) => !== observer);
+    }
+}
+```
+
+Then, we can save the return value after registering and call it later to unregister.
+
+```js
+const unregisterDisplayTodos = subject.registerObserver(displayTodos)
+
+// later when we want to unregister
+unregisterDisplayTodos(); // displayTodos will no longer be notified
+```
+
+## FIN
+
+Redux is a popular JavaScript library that uses the _Observer Pattern_. In the next post, we'll demystify redux by creating our own small redux library.
+
+Happy Coding!
