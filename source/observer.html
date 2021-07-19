@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Observer Pattern</title>
+  </head>
+  <body>
+    <ul></ul>
+    <form>
+      <input required placeholder="New task..." />
+      <button type="submit">Add</button>
+    </form>
+  </body>
+  <script>
+    let todos = []; // Subject
+    let observers = [];
+
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = form.elements[0];
+      const item = {
+        id: Date.now(), // We use this later for deleting specific todos
+        description: input.value,
+      };
+      addTodo(item);
+      input.value = ""; // Clear the text input
+    });
+
+    function addTodo(item) {
+      todos.push(item);
+      notifyObservers();
+    }
+
+    function displayTodos() {
+      const ul = document.querySelector("ul");
+      ul.innerHTML = "";
+      todos.forEach((todo) => {
+        const li = document.createElement("li");
+        li.innerText = todo.description;
+
+        const button = document.createElement("button");
+        button.innerText = "Remove";
+        button.addEventListener("click", () => {
+          removeTodo(todo.id);
+        });
+        li.appendChild(button);
+
+        ul.appendChild(li);
+      });
+    }
+
+    function registerObserver(observer) {
+      observers.push(observer);
+    }
+
+    registerObserver(displayTodos);
+
+    function notifyObservers() {
+      observers.forEach((observer) => observer());
+    }
+
+    function removeTodo(id) {
+      todos = todos.filter((todo) => todo.id !== id);
+      notifyObservers();
+    }
+
+    function persistData() {
+      localStorage.setItem("saved-todos", JSON.stringify(todos));
+    }
+
+    registerObserver(persistData);
+
+    function loadTodos() {
+      const savedTodos = localStorage.getItem("saved-todos");
+      if (savedTodos) {
+        todos = JSON.parse(savedTodos);
+        notifyObservers();
+      }
+    }
+
+    window.addEventListener("load", () => {
+      loadTodos();
+    });
+  </script>
+</html>
