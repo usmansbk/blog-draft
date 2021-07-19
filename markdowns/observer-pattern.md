@@ -12,9 +12,9 @@ In a nutshell, the Observer Pattern is similar to Twitter's _Followers_ feature.
 
 The Observer Pattern has only two components. The _Subject_ and the _Observers_. The _Observers_ only want to know when we update the _Subject_. They don't care when it happens.
 
-Going back to our Twitter analogy, Our _Tweet_ is the _Subject_, while our _Followers_ are the _Observers_. We notify our followers whenever we post a new tweet.
+Going back to our Twitter analogy, our Tweet is the Subject, while our Followers are the Observers.
 
-So, how does it relate to our Todo list application? We'll uncover the answer while we build the app, but first we need to know the features of our app.
+So, how does it relate to our Todo list application? We'll uncover the answer while we build the app, but first, we need to know the features of our app.
 
 - We want to be able to add a unique todo to our list
 - We want to be able to remove a todo from our list
