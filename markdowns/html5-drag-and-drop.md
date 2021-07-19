@@ -101,4 +101,4 @@ dragHandle.addEventListener("mousedown", () => {
 });
 ```
 
-Now try dragging an item around, and you'll see it highlighted.
+Now, try dragging an item around, and you'll see it highlighted. Our browser knows we're dragging a `li` element, but it doesn't know what item of the array. To tell the browser what index we're dragging, we can use the `dataTransfer` object. The `dataTransfer` object allows us to communicate with the browser when dragging and dropping.

@@ -29,6 +29,10 @@
       },
     ];
 
+    function onDragStart(event) {
+      console.log("drag start");
+    }
+
     function displayItems() {
       const ul = document.querySelector("ul");
       ul.innerHTML = "";
@@ -43,6 +47,8 @@
         dragHandle.addEventListener("mousedown", () => {
           li.setAttribute("draggable", true);
         });
+
+        li.addEventListener("dragstart", onDragStart);
 
         ul.appendChild(li);
       });
