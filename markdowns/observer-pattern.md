@@ -301,8 +301,8 @@ window.addEventListener("load", () => {
         event.preventDefault();
         const input = form.elements[0];
         const item = {
-        id: Date.now(),
-        description: input.value,
+            id: Date.now(),
+            description: input.value,
         };
         subject.addTodo(item);
         input.value = "";
