@@ -29,10 +29,6 @@
       },
     ];
 
-    function onDragStart(event) {
-      console.log("drag start");
-    }
-
     function displayItems() {
       const ul = document.querySelector("ul");
       ul.innerHTML = "";
@@ -48,7 +44,19 @@
           li.setAttribute("draggable", true);
         });
 
-        li.addEventListener("dragstart", onDragStart);
+        li.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("index", item.index);
+        });
+
+        li.addEventListener("drop", (event) => {
+          const droppedIndex = event.dataTransfer.getData("index");
+          console.log("current item index", item.index);
+          console.log("dropped item index", droppedIndex);
+        });
+
+        li.addEventListener("dragover", (event) => {
+          event.preventDefault();
+        });
 
         ul.appendChild(li);
       });

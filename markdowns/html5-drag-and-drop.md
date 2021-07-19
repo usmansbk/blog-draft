@@ -101,4 +101,24 @@ dragHandle.addEventListener("mousedown", () => {
 });
 ```
 
-Now, try dragging an item around, and you'll see it highlighted. Our browser knows we're dragging a `li` element, but it doesn't know what item of the array. To tell the browser what index we're dragging, we can use the `dataTransfer` object. The `dataTransfer` object allows us to communicate with the browser when dragging and dropping.
+Now, try dragging an item around, and you'll see it highlighted. Our browser knows we're dragging a `li` element, but it doesn't know what item of the array. To tell the browser what item we're dragging, we can use the `dataTransfer` object. The `dataTransfer` object allows us to communicate with the browser when dragging and dropping.
+
+```js
+// After the mousedown listener
+li.addEventListener("dragstart", (event) => {
+  event.dataTransfer.setData("index", item.index);
+});
+```
+
+Why do we even need to tell the browser? The answer is simply because the item we're dropping on needs to know what is being dropped on it, and the only way for it to know is through the browser's `dataTransfer` object.
+
+So, how does an item know something is being dropped on it? Every draggable element can listen for a `drop` event. The browser fires a `drop` event whenever we drop an item. For instance, when we drag item-1 and drop it on item-3, item-1 will listen for `dragstart` event, while item-2 will listen for a `drop` event.
+
+```js
+// After the dragstart listener
+li.addEventListener("drop", (event) => {
+  const droppedIndex = event.dataTransfer.getData("index");
+  console.log("current item index", item.index);
+  console.log("dropped item index", droppedIndex);
+});
+```
