@@ -1,7 +1,7 @@
 ---
-title: Sorting with Drag & Drop API
+title: Drag & Drop Sort List
 published: false
-description: Understanding the HTML5 Drag & Drop API
+description: Sorting a list using the HTML5 Drag & Drop API
 tags:
 cover_image: https://user-images.githubusercontent.com/10219539/126219879-543edda3-088b-4314-bf6a-0783b86d44cb.png
 ---
@@ -26,15 +26,15 @@ Let's start simple. We'll structure the UI according to the header image. We onl
     const items = [
       {
         index: 0,
-        title: "1 - One",
+        title: "0 - Zero",
       },
       {
         index: 1,
-        title: "2 - Two",
+        title: "1 - One",
       },
       {
         index: 2,
-        title: "3 - Three",
+        title: "2 - Two",
       },
     ];
 
@@ -43,7 +43,7 @@ Let's start simple. We'll structure the UI according to the header image. We onl
 </html>
 ```
 
-First, we populate the unordered list with items. Each item has a button that will serve as the drag handle.
+First, we populate the unordered list with items. Each item has a unique index and a button that will serve as the drag handle.
 
 ```js
 function displayItems() {
@@ -108,7 +108,7 @@ li.addEventListener("dragstart", (event) => {
 
 Why do we even need to tell the browser? The answer is simply because the item we're dropping on needs to know what is being dropped on it, and the only way for it to know is through the browser's `dataTransfer` object.
 
-So, how does an item know something is being dropped on it? Every draggable element can listen for a `drop` event. The browser fires a `drop` event whenever we drop an item. For instance, when we drag item-1 and drop it on item-3, item-1 will listen for `dragstart` event, while item-2 will listen for a `drop` event.
+So, how does an item know something is being dropped on it? Every element can listen for a `drop` event. The browser fires a `drop` event whenever we drop an item. For instance, when we drag item-0 and drop it on item-2, item-0 will listen for `dragstart` event, while item-2 will listen for a `drop` event.
 
 ```js
 // After the dragstart listener
@@ -135,7 +135,7 @@ li.addEventListener("dragover", (event) => {
 
 Try testing the code again, and it should work on any browser.
 
-Now that we can drag and drop, the final step is to swap positions instead of logging to console. For that, we create a `swap` function.
+The final step is to swap positions instead of logging to console. For that, we create a `swap` function.
 
 ```js
 function swap(draggedIndex, dropIndex) {
@@ -156,7 +156,7 @@ function swap(draggedIndex, dropIndex) {
 }
 ```
 
-Then we call the `swap` function instead of logging to console, then set the dropped item `draggable` attribute to false, to make sure items can only be dragged using the handle.
+We call the `swap` function to change the positions of the items. Then we set the `draggable` attribute to `false` because we want to drag items using only the drag handle.
 
 ```js
 li.addEventListener("drop", (event) => {
@@ -170,9 +170,9 @@ li.addEventListener("drop", (event) => {
 
 That's it! We now have a working drag-sort list.
 
-Here is a list of things you can try:
+Here are a few things you can try:
 
 - Hide the original dragging item on drag start to improve user experience.
-- Reduce the opacity of an item when dragging over.
+- Reduce the opacity of the item you're dragging over to.
 
 Happy Coding!
