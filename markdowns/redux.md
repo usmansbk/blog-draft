@@ -19,4 +19,22 @@ Design Patterns are shared vocabulary. By understanding these design patterns we
 
 For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
 
-In this Redux tutorial, you will learn how redux works by building a simple Redux clone step by step. Doing this will help you in demystifying the library.
+In this Redux tutorial, you will learn how redux works by building a simple to-do app step by step. Doing this will help you in demystifying the library.
+
+## Seperation of Concern
+
+One of the core principles of good software design is seperation of concern. What this means in the frond-end world is that we shouldn't mix our UI code with our App logic code. An example of a bad function is:
+
+```js
+const todos = []; // state
+
+// Bad
+function addTodo() {
+    const input = document.getElementById('input').value; // UI
+    const description = input.value;
+    todos.push(description); // State manipulation
+    input.value = '';  // UI manipulation
+
+    // more code that manipulates the state
+}
+```
