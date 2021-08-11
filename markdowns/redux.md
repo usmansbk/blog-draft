@@ -70,8 +70,8 @@ function addTodo() {
     todos.push(description); // State manipulation
     input.value = '';  // UI manipulation
 
-    // more code that manipulates the ui and state
+    localStorage.setItem("todos", JSON.stringify(todos));
 }
 ```
 
-Why is this code bad? Because the `addTodo` function does two things - Manipulating the State, and the UI
+Why is this code bad? Because the `addTodo` does more than one thing. It updates the state, then tries to clear the input form, then finally save the todos in local storage. It doesn't really do one thing as the name specifies.
