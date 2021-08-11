@@ -34,20 +34,20 @@ We will try to keep the project as simple. Our app will contain two kinds of lis
     <body>
         <section>
             <h2>Todos</h2>
-            <ul id="todos"></ul>
             <form id="add-todo">
                 <input name="todo" required />
                 <button type="submit">Add To-Do</button>
             </form>
+            <ul id="todos"></ul>
         </section>
 
         <section>
             <h2>Goals</h2>
-            <ul id="goals"></ul>
             <form id="add-goal">
                 <input name="goal" required />
                 <button type="submit">Add Goal</button>
             </form>
+            <ul id="goals"></ul>
         </section>
     </body>
     <script>
