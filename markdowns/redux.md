@@ -33,7 +33,7 @@ We will try to keep the project as simple. Our app will contain two kinds of lis
     </head>
     <body>
         <section>
-            <h2>To-Do</h2>
+            <h2>Todos</h2>
             <ul id="todos"></ul>
             <form id="add-todo">
                 <input name="todo" required />
@@ -50,6 +50,9 @@ We will try to keep the project as simple. Our app will contain two kinds of lis
             </form>
         </section>
     </body>
+    <script>
+
+    </script>
 </html>
 ```
 
