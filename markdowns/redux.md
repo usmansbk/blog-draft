@@ -21,6 +21,38 @@ For a gentle intro to the Observer Pattern, check out my previous post, [To-Do L
 
 In this Redux tutorial, you will learn how redux works by building a simple to-do app step by step. Doing this will help you in demystifying the library.
 
+## Structure
+
+We will try to keep the project as simple. Our app will contain two kinds of list. The first is a normal Todo list that allows us to Add, Remove, and Toggle todos. The second is a goals list that allows us to Add and Remove our weekly goals.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Simply Redux</title>
+    </head>
+    <body>
+        <section>
+            <h2>To-Do</h2>
+            <ul id="todos"></ul>
+            <form id="add-todo">
+                <input name="todo" required />
+                <button type="submit">Add To-Do</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Goals</h2>
+            <ul id="goals"></ul>
+            <form id="add-goal">
+                <input name="goal" required />
+                <button type="submit">Add Goal</button>
+            </form>
+        </section>
+    </body>
+</html>
+```
+
 ## Seperation of Concern
 
 One of the core principles of good software design is seperation of concern. What this means in the frond-end world is that we shouldn't mix our UI code with our App logic code. An example of a bad function is:
@@ -35,6 +67,8 @@ function addTodo() {
     todos.push(description); // State manipulation
     input.value = '';  // UI manipulation
 
-    // more code that manipulates the state
+    // more code that manipulates the ui and state
 }
 ```
+
+Why is this code bad? Because the `addTodo` function does two things - Manipulating the State, and the UI
