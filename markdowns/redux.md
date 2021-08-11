@@ -2,11 +2,11 @@
 title: Simply Redux
 published: false
 description: Understanding Redux by building a Todo simple app
-tags: 
+tags: Redux, Design Patterns
 //cover_image: https://direct_url_to_image.jpg
 ---
 
-When you hear the word Redux, the next thing that comes to mind is probably React. But you don't need to know React to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it iswas designed.
+When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it was designed.
 
 Like all well designed libraries and frameworks, Redux too is a combination of design patterns.
 
