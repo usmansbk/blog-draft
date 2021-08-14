@@ -141,3 +141,21 @@ let state = {
 ```
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
+
+## Connect Todos List UI
+
+Let's start with the Todos list by updating the UI section to get the user input.
+
+```js
+// UI section
+window.addEventListener('load', () => {
+    const todoForm = document.getElementById('add-todo');
+
+    todoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const todoInput = todoForm.elements.todo;
+        const description = todoInput.value;
+        console.log(description);
+    });
+});
+```

@@ -24,6 +24,22 @@
         </form>
         <ul id="goals"></ul>
     </section>
-    <script></script>
+    <script>
+        let state = {
+            todos: [],
+            goals: [],
+        };
+
+        window.addEventListener('load', () => {
+            const todoForm = document.getElementById('add-todo');
+
+            todoForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const todoInput = todoForm.elements.todo;
+                const description = todoInput.value;
+                console.log(description);
+            });
+        });
+    </script>
 </body>
 </html>
