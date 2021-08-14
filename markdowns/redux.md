@@ -8,12 +8,21 @@ tags: Redux, Design Patterns
 
 <!-- Redux is a library for managing global application state.
 Redux is typically used with React
+
 Redux uses a "one-way data flow" app structure
+
 Command Pattern allows you to decouple the requester of an action from the object that actually performs the action.
+
 The client is responsible for creating the command object. The command object consist of a set of actions on a reciever.
+
 The command object encapsulates the actions and can be called to invoke the actions on the Receiver.
+
 The command pattern encapsulates a request as an object, thereby letting you parameterize other other objects with different requests.
+
+The command pattern aims to encapsulate method invocation, requests or operations into a single object and gives us the ability to both parameterize and pass method calls around that can be executed at our discretion.
+
 Meta command pattern allows you to create macros of commands so that you can execute multiple commands at once.
+
 A null object is useful when you don't have a meaningful object to return, and yet you want to remove the responsibility for handling null from the client.
 Smart command objects implement the logic needed to carry out a request.
 When you use the Command Pattern, you end up with a log of small classes.
@@ -70,7 +79,7 @@ Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list 
 
 ## Seperation of Concern
 
-One of the core principles of good software design is seperation of concern. What this means in the frond-end world is that we shouldn't mix our UI code with our App logic code. An example of a bad function is:
+One of the core principles of good software design is the seperation of concern. In the front-end world, this means we should minimize how we mix UI logic and app logic:
 
 ```js
 const todos = []; // state
@@ -79,11 +88,12 @@ const todos = []; // state
 function addTodo() {
     const input = document.getElementById('input').value; // UI
     const description = input.value;
+
     todos.push(description); // State manipulation
-    input.value = '';  // UI manipulation
+    input.value = '';  // DOM manipulation
 
     localStorage.setItem("todos", JSON.stringify(todos)); // Secretely using the local storage. Not cool!
 }
 ```
 
-Why is this code bad? Because the `addTodo` does more than one thing. It updates the state, then tries to clear the input form, then finally save the todos in local storage. It doesn't really do one thing as the name specifies.
+The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally access the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test and manage.
