@@ -102,8 +102,7 @@ The `addTodo` function is bad because it does more than one thing. It updates th
 // State logic section
 
 
-
 // UI logic section
 ```
 
-The State logic section code will not manipulate the DOM or access any UI section code. While the UI section will handle DOM manipulation.
+The State logic section code will not manipulate the DOM or access any UI section code. While the UI section will handle DOM manipulation. Since the UI needs to display and update the state, we need a way to access it from the UI logic section without breaking the "Principle of Seperation of Concern".
