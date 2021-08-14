@@ -120,7 +120,7 @@ const todos = [];
 const goals = [];
 ```
 
-The problem with storing our application data this way is that a team member could come along and do something like this:
+The problem with storing application data this way is that a team member could come along and do something like this:
 
 ```js
 const todos = [];
@@ -139,3 +139,5 @@ const state = {
     goals: [],
 };
 ```
+
+The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
