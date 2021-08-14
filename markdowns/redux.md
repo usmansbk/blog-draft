@@ -111,3 +111,31 @@ The `addTodo` function is bad because it does more than one thing. It updates th
 The State section will not manipulate the DOM or access the UI section, while the UI section will handle DOM manipulation. Since the UI needs to display and update the state, we need to create a way to access it from the UI section without breaking the "Separation of Concern" principle.
 
 ## State Tree
+
+Our app will make use of two kinds of data. The `todos` and `goals`. A naive way of storing our application data would be declaring each as a variable.
+
+```js
+// State section
+const todos = [];
+const goals = [];
+```
+
+The problem with storing our application data this way is that a team member could come along and do something like this:
+
+```js
+const todos = [];
+const goals = [];
+let counter = 0;
+```
+
+This makes it difficult to understand. Is the `counter` variable part of the application data or not?
+
+A cleaner way of preventing this would be grouping our app data as a single unit. This makes it easier to differentiate application data from other variables.
+
+```js
+// State manipulation section
+const state = {
+    todos: [],
+    goals: [],
+};
+```
