@@ -86,7 +86,7 @@ const todos = []; // state
 
 // Bad
 function addTodo() {
-    const input = document.getElementById('input').value; // UI
+    const input = document.getElementById('input').value;
     const description = input.value;
 
     todos.push(description); // State manipulation
@@ -96,7 +96,7 @@ function addTodo() {
 }
 ```
 
-The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally access the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test and manage. To ensure we stick to this principle, we'll be seperating our JS code into two sections.
+The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally access the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test, debug, and manage. To ensure we stick to this principle, we'll be seperating our JS code into two sections.
 
 ```js
 // State logic section
