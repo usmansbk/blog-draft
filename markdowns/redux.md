@@ -150,4 +150,4 @@ We've created our state tree, but nothing prevents us from doing something like 
 state.todos = "Fire spitting Bugs";
 ```
 
-Now, every part of our app using the `todos` state will crash because it's no longer an `Array`.
+Now, every part of our app expecting the `todos` state to be an array will crash.
