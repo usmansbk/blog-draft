@@ -40,7 +40,7 @@ Design Patterns are shared vocabulary. Understanding these design patterns will 
 
 For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
 
-In this Redux tutorial, you will learn how redux works by building a simple to-do app step by step. Doing this will help you in demystifying the library.
+In this Redux tutorial, you will learn how redux works by building a simple redux clone step by step. Doing this will help you in demystifying the library.
 
 ## Structure
 
@@ -96,4 +96,14 @@ function addTodo() {
 }
 ```
 
-The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally access the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test and manage.
+The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally access the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test and manage. To ensure we stick to this principle, we'll be seperating our JS code into two sections.
+
+```js
+// State logic section
+
+
+
+// UI logic section
+```
+
+The State section code will not do anything related to DOM manipulation, and we'll create a simple interface to allow the UI section use the State. The state section will be "dumb" and know nothing about the UI using it.
