@@ -79,7 +79,7 @@ Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list 
 
 ## Seperation of Concern
 
-One of the core principles of good software design is the separation of concerns. This means we shouldn't mix UI code with State logic code. Example:
+One of the core principles of good software design is the separation of concerns. This means we minimize mixing UI code with State logic code. Example:
 
 ```js
 const todos = []; // state
@@ -116,15 +116,15 @@ Our app will make use of two kinds of data. The `todos` and `goals`. A naive way
 
 ```js
 // State section
-const todos = [];
-const goals = [];
+let todos = [];
+let goals = [];
 ```
 
 The problem with storing application data this way is that a team member could come along and do something like this:
 
 ```js
-const todos = [];
-const goals = [];
+let todos = [];
+let goals = [];
 let counter = 0;
 ```
 
@@ -134,20 +134,10 @@ A cleaner way of preventing this would be grouping our app data as a single unit
 
 ```js
 // State manipulation section
-const state = {
+let state = {
     todos: [],
     goals: [],
 };
 ```
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
-
-## Store
-
-We've created our state tree, but nothing prevents us from doing something like this.
-
-```js
-state.todos = "Fire spitting Bugs";
-```
-
-Now, every part of our app expecting the `todos` state to be an array will crash.
