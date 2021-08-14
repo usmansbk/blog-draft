@@ -98,11 +98,16 @@ function addTodo() {
 
 The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally accesses the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test, debug, and manage. To ensure we stick to this principle, we'll be separating our JS code into two sections.
 
-```js
+```html
+<script>
 // State section
 
-
+// ================== separating State and UI code =================
 // UI section
+
+</script>
 ```
 
 The State section will not manipulate the DOM or access the UI section, while the UI section will handle DOM manipulation. Since the UI needs to display and update the state, we need to create a way to access it from the UI section without breaking the "Separation of Concern" principle.
+
+## State Tree
