@@ -29,14 +29,14 @@ When you use the Command Pattern, you end up with a log of small classes.
 
 Actions are request objects to a reciever/command -->
 
-When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it was designed.
+When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it is designed. Instead they try to figure out how to make it work with React.
 
 Like all well designed libraries and frameworks, Redux too is a combination of design patterns.
 
 - Observer Pattern
 - Command Pattern
 
-Design Patterns are shared vocabulary. Understanding these design patterns will give us a good mental model of Redux. Don't worry if you don't know these patterns yet, we'll be learning each of them in this tutorial.
+Design Patterns are shared vocabulary. Understanding these design patterns will give us a good mental model of Redux. Don't worry if you don't know these patterns yet, we'll be learning them in this tutorial.
 
 For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
 
@@ -79,7 +79,7 @@ Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list 
 
 ## Seperation of Concern
 
-One of the core principles of good software design is the seperation of concern. In the front-end world, this means we should minimize how we mix UI logic and app logic:
+One of the core principles of good software design is the seperation of concern. In the front-end world, this means we should minimize how we mix UI logic and app logic. Example:
 
 ```js
 const todos = []; // state
