@@ -79,7 +79,7 @@ Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list 
 
 ## Seperation of Concern
 
-One of the core principles of good software design is the seperation of concern. In the front-end world, this means we should minimize how we mix UI logic and app logic. Example:
+One of the core principles of good software design is the separation of concerns. This means we shouldn't mix UI code with State logic code. Example:
 
 ```js
 const todos = []; // state
