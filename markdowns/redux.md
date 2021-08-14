@@ -6,16 +6,28 @@ tags: Redux, Design Patterns
 //cover_image: https://direct_url_to_image.jpg
 ---
 
+<!-- Redux is a library for managing global application state.
+Redux is typically used with React
+Redux uses a "one-way data flow" app structure
+Command Pattern allows you to decouple the requester of an action from the object that actually performs the action.
+The client is responsible for creating the command object. The command object consist of a set of actions on a reciever.
+The command object encapsulates the actions and can be called to invoke the actions on the Receiver.
+The command pattern encapsulates a request as an object, thereby letting you parameterize other other objects with different requests.
+Meta command pattern allows you to create macros of commands so that you can execute multiple commands at once.
+A null object is useful when you don't have a meaningful object to return, and yet you want to remove the responsibility for handling null from the client.
+Smart command objects implement the logic needed to carry out a request.
+When you use the Command Pattern, you end up with a log of small classes.
+
+Actions are request objects to a reciever/command -->
+
 When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it was designed.
 
 Like all well designed libraries and frameworks, Redux too is a combination of design patterns.
 
 - Observer Pattern
 - Command Pattern
-- State Pattern
-- Mediator Pattern
 
-Design Patterns are shared vocabulary. By understanding these design patterns we will finally understand the thought process of Redux creator. Don't worry if you don't know these patterns, as we'll learn them in this tutorial.
+Design Patterns are shared vocabulary. Understanding these design patterns will give us a good mental model of Redux. Don't worry if you don't know these patterns yet, we'll be learning each of them in this tutorial.
 
 For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
 
@@ -23,7 +35,7 @@ In this Redux tutorial, you will learn how redux works by building a simple to-d
 
 ## Structure
 
-We will try to keep the project as simple. Our app will contain two kinds of list. The first is a normal Todo list that allows us to Add, Remove, and Toggle todos. The second is a goals list that allows us to Add and Remove our weekly goals.
+Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list that allows us to Add, Remove, and Toggle todos. The second is a goals list that allows us to Add and Remove our weekly goals.
 
 ```html
 <!DOCTYPE html>
@@ -51,7 +63,7 @@ We will try to keep the project as simple. Our app will contain two kinds of lis
         </section>
     </body>
     <script>
-
+        // All our JavaScript goes here
     </script>
 </html>
 ```
@@ -70,7 +82,7 @@ function addTodo() {
     todos.push(description); // State manipulation
     input.value = '';  // UI manipulation
 
-    localStorage.setItem("todos", JSON.stringify(todos));
+    localStorage.setItem("todos", JSON.stringify(todos)); // Secretely using the local storage. Not cool!
 }
 ```
 
