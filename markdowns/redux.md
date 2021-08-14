@@ -141,3 +141,13 @@ const state = {
 ```
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
+
+## Store
+
+We've created our state tree, but there's nothing preventing us from doing something like this.
+
+```js
+state.todos = "Fire spitting Bugs";
+```
+
+Every part of our app making use of the `todos` state will crash because it is no longer an `Array`.
