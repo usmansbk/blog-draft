@@ -88,41 +88,6 @@ The final app should look like this:
 </html>
 ```
 
-## Seperation of Concerns
-
-One of the core principles of good software design is the separation of concerns. This means we shouldn't mix UI code with State logic code. Like this:
-
-```js
-const todos = []; // state
-
-// Bad
-function addTodo() {
-    const input = document.getElementById('input').value;
-    const description = input.value;
-
-    todos.push(description); // State manipulation
-    input.value = '';  // DOM manipulation
-
-    localStorage.setItem("todos", JSON.stringify(todos)); // Secretely using the local storage. Not cool!
-}
-```
-
-The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally accesses the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test, debug, and manage. To ensure we stick to this principle, we'll be sectioning our JS code into two parts.
-
-```html
-<script>
-// State section
-
-// ================== separating State and UI code =================
-// UI section
-
-</script>
-```
-
-State logic should never manipulate the UI (DOM) of an application.
-
-Separating UI and State logic makes our code cleaner and more maintanable.
-
 ## State Tree
 
 Conceptually, there are two kinds of data in our application. Two arrays of todo item objects and books item objects. A naive way of storing our application data would be declaring them as variables.
@@ -146,7 +111,7 @@ This makes it difficult to understand. Is the `counter` variable part of the app
 A cleaner way of preventing this would be grouping our app data as a single unit. This makes it easier to keep track of our application state.
 
 ```js
-// State manipulation section
+// State section
 let state = {
     todos: [],
     books: [],
@@ -156,9 +121,9 @@ let counter = 0; // Just a useless variable
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
 
-There should be only one State Tree in an application -- A single centralized place to contain the global state in our application.
+There should be only one State Tree in an application ― A single centralized place to contain the global state in our application.
 
-## Store
+### Adding Todo
 
 Let's start adding Todo items to our State by connecting it to our UI.
 
@@ -175,8 +140,42 @@ window.addEventListener('load', () => {
 });
 ```
 
-Each item should have these fields:
+Based on the requirements, each todo item should have these fields:
 
 - id: a unique number
 - text: the text the user typed in
 - completed: a boolean flag
+
+A naive approach of adding items would be directly doing it in the UI code.
+
+```js
+// Bad
+todoForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+
+    const todo = {
+        id: Date.now(),
+        text,
+        completed: false
+    };
+    state.todos.push(todo);
+});
+```
+
+This approach is bad because our `submit` handler knows too much about our state tree.
+
+Setting the ID and completed status of a Todo should be the responsibilty of the state, not the UI event handler.
+
+Also, imagine we later decided to change our state tree to this:
+
+```js
+// state section 
+let state = {
+    todos: {}, // Now an object literal
+    books: [],
+};
+```
+
+This will break our UI because it depends on `state.todos` being an Array object. We need to prevent this kind of dependency between state and view.
