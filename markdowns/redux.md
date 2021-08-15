@@ -185,7 +185,7 @@ We can achieve loose coupling by hiding our state tree and only accessing it via
 This is achieved by closing the state in a function and returning an object with public methods to access the data. The returned object is called a store.
 
 ```js
-// state section
+// State section
 function createStore() {
     let state = {
         todos: [],
@@ -198,6 +198,19 @@ function createStore() {
 }
 
 const store = createStore();
+
+// UI section
+window.addEventListener('load', () => {
+    const todoForm = document.getElementById('add-todo');
+
+    todoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const todoInput = todoForm.elements.todo;
+        const text = todoInput.value;
+    });
+});
 ```
 
-Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done through the store object-supported methods.
+Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods.
+
+### Updating the State
