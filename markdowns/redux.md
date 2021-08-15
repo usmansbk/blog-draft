@@ -192,7 +192,7 @@ function createStore() {
         books: [],
     };
 
-    return { // return a store object
+    return { // store object
 
     };
 }
@@ -200,4 +200,4 @@ function createStore() {
 const store = createStore();
 ```
 
-Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done through the store object supported methods.
+Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done through the store object-supported methods.
