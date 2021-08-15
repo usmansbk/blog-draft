@@ -119,13 +119,13 @@ The `addTodo` function is bad because it does more than one thing. It updates th
 </script>
 ```
 
-The top half will handle the application state logic, while the bottom half will manage the UI.
-
 State logic should never manipulate the UI (DOM) of an application.
+
+Separating UI and State logic makes our code cleaner and more maintanable.
 
 ## State Tree
 
-Conceptually, there are two kinds of data in our application. The `todos` and `goals`. A naive way of storing our application data would be declaring them as variables.
+Conceptually, there are two kinds of data in our application. Two arrays of todo item objects and goal item objects. A naive way of storing our application data would be declaring them as variables.
 
 ```js
 // State section
