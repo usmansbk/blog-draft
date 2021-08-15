@@ -49,9 +49,9 @@ In this tutorial, we're going to learn how redux works by building a simple todo
   - An input box to let the user type in the new item
   - A button to add the item
   - A list of all the exisiting items
-- Todo and Goal items should have unique IDs
-- We should be able to delete Todo and Goal items
-- Clicking a Todo item should mark it as completed
+- Each items should have unique ID value
+- We should be able to delete items
+- Clicking an item should mark it as completed
 
 The final app should look like this:
 
@@ -119,7 +119,9 @@ The `addTodo` function is bad because it does more than one thing. It updates th
 </script>
 ```
 
-The top-half will handle the application state logic, while the bottom-half will manage the UI. State logic should never manipulate the UI (DOM) of an application.
+The top-half will handle the application state logic, while the bottom-half will manage the UI.
+
+State logic should never manipulate the UI (DOM) of an application.
 
 ## State Tree
 
@@ -141,7 +143,7 @@ let counter = 0;
 
 This makes it difficult to understand. Is the `counter` variable part of the application data or not?
 
-A clean way of preventing this would be grouping our app data as a single unit. This makes it easier to differentiate application data from other variables.
+A cleaner way of preventing this would be grouping our app data as a single unit. This makes it easier to keep track of our application state.
 
 ```js
 // State manipulation section
@@ -149,9 +151,12 @@ let state = {
     todos: [],
     goals: [],
 };
+let counter = 0; // Just a useless variable
 ```
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
+
+There should be only one State Tree in an application -- A single centralized place to contain the global state in our application.
 
 ## Store
 
