@@ -142,9 +142,9 @@ let state = {
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
 
-## Connect Todos List UI
+## Store
 
-Let's start with the Todos list by updating the UI section to get the user input.
+Let's start populating our Todos list UI by connecting it with our state. Add the following code that handles adding a Todo item to our UI section.
 
 ```js
 // UI section
@@ -154,8 +154,48 @@ window.addEventListener('load', () => {
     todoForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
-        const description = todoInput.value;
-        console.log(description);
+        const todo = {
+            id: Date.now(),
+            description: totoInput.value,
+        };
     });
+});
+```
+
+Our Todos list UI needs to perform 3 actions on the `todos` state:
+
+- Add todo
+- Delete todo
+- Toggle completed todo
+
+The UI code should never directly access our state tree like this:
+
+```js
+// Bad! Don't do this!
+todoForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const todo = {
+        id: Date.now(),
+        description: totoInput.value,
+    };
+    state.todos.push(todo); // Directly accessing the state tree
+});
+```
+
+Doing that makes the code hard to manage later. Imagine we decided to rename `state.todos` to `state.todolist`. Now we have to go through all of our code and update the references.
+
+Also, nothing prevents a new Team member from doing something like this:
+
+```js
+// Fire spitting bug
+todoForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const todo = {
+        id: Date.now(),
+        description: totoInput.value,
+    };
+    state.todos = todo; // Directly accessing the state tree
 });
 ```
