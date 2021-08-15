@@ -17,17 +17,17 @@
     </section>
 
     <section>
-        <h2>Goals</h2>
-        <form id="add-goal">
-            <input name="goal" required />
-            <button type="submit">Add Goal</button>
+        <h2>Books</h2>
+        <form id="add-book">
+            <input name="book" required />
+            <button type="submit">Add Book</button>
         </form>
-        <ul id="goals"></ul>
+        <ul id="books"></ul>
     </section>
     <script>
         let state = {
             todos: [],
-            goals: [],
+            books: [],
         };
 
         window.addEventListener('load', () => {
