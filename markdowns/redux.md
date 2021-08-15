@@ -44,14 +44,14 @@ In this tutorial, we're going to learn how redux works by building a simple todo
 
 ### Requirements
 
-- The UI should consist of two main sections: Todos and Goals
+- The UI should consist of two main sections: Todos and Books
 - Each section should consist of 3 parts:
   - An input box to let the user type in the new item
   - A button to add the item
   - A list of all the exisiting items
-- Each items should have unique ID value
+- Each item should have a unique ID value
 - We should be able to delete items
-- Clicking an item should mark it as completed
+- Clicking a Todo item should mark it as completed
 
 The final app should look like this:
 
@@ -74,12 +74,12 @@ The final app should look like this:
         </section>
 
         <section>
-            <h2>Goals</h2>
-            <form id="add-goal">
-                <input name="goal" required />
-                <button type="submit">Add Goal</button>
+            <h2>Books</h2>
+            <form id="add-book">
+                <input name="book" required />
+                <button type="submit">Add Book</button>
             </form>
-            <ul id="goals"></ul>
+            <ul id="books"></ul>
         </section>
     </body>
     <script>
@@ -125,19 +125,19 @@ Separating UI and State logic makes our code cleaner and more maintanable.
 
 ## State Tree
 
-Conceptually, there are two kinds of data in our application. Two arrays of todo item objects and goal item objects. A naive way of storing our application data would be declaring them as variables.
+Conceptually, there are two kinds of data in our application. Two arrays of todo item objects and books item objects. A naive way of storing our application data would be declaring them as variables.
 
 ```js
 // State section
 let todos = [];
-let goals = [];
+let books = [];
 ```
 
 The problem with storing application data this way is that a team member could come along and do something like this:
 
 ```js
 let todos = [];
-let goals = [];
+let books = [];
 let counter = 0;
 ```
 
@@ -149,7 +149,7 @@ A cleaner way of preventing this would be grouping our app data as a single unit
 // State manipulation section
 let state = {
     todos: [],
-    goals: [],
+    books: [],
 };
 let counter = 0; // Just a useless variable
 ```
@@ -160,7 +160,7 @@ There should be only one State Tree in an application -- A single centralized pl
 
 ## Store
 
-Let's start populating our Todos list UI by connecting it with our state. Add the following code that handles adding a Todo item to our UI section.
+Let's start adding Todo items to our State by connecting it to our UI.
 
 ```js
 // UI section
@@ -170,42 +170,13 @@ window.addEventListener('load', () => {
     todoForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
-        const description = todoInput.value;
+        const text = todoInput.value;
     });
 });
 ```
 
-Our Todos list UI needs to perform 3 actions on the `todos` state:
+Each item should have these fields:
 
-- Add todo
-- Delete todo
-- Toggle completed todo
-
-The UI code should never directly access our state tree like this:
-
-```js
-// Bad! Don't do this!
-todoForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const todoInput = todoForm.elements.todo;
-    const description = todoInput.value;
-    state.todos.push(description); // Directly accessing the state tree
-});
-```
-
-Doing that makes the code difficult to manage later. Imagine we decided to rename `state.todos` to `state.todolist`. Now we have to go through all our code and update the references.
-
-Also, nothing prevents a new Team member from doing something like this:
-
-```js
-// Fire spitting bug
-todoForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const todoInput = todoForm.elements.todo;
-    const todo = {
-        id: Date.now(),
-        description: totoInput.value,
-    };
-    state.todos = todo; // Replacing the state tree 
-});
-```
+- id: a unique number
+- text: the text the user typed in
+- completed: a boolean flag
