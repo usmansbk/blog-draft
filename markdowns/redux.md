@@ -119,7 +119,7 @@ The `addTodo` function is bad because it does more than one thing. It updates th
 </script>
 ```
 
-The top-half will handle the application state logic, while the bottom-half will manage the UI. State logic should never manipulate the UI of an application.
+The top-half will handle the application state logic, while the bottom-half will manage the UI. State logic should never manipulate the UI (DOM) of an application.
 
 ## State Tree
 
