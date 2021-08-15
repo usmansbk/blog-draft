@@ -123,7 +123,7 @@ The `state` variable is called a **State Tree**. A state tree is an object that 
 
 There should be only one State Tree in an application ― A single centralized place to contain the global state in our application.
 
-### Updating the State (First Attempt)
+### Updating the State (Naive Approach)
 
 Let's start adding Todo items to our State by connecting it to our UI.
 
@@ -213,13 +213,13 @@ window.addEventListener('load', () => {
 
 Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods. Keeping the state and view code loosely coupled.
 
-### Updating the State
+### Updating the State (OOP Approach)
 
 Now, we need away to update our state. Based on our application requirements, we should be able to do the following:
 
 - Add a Todo item
 - Delete an Item
-- Mark completed todo
+- Toggle completed todo
 
 By following good OOP practice, we can create a method for each action.
 
@@ -272,3 +272,5 @@ window.addEventListener('load', () => {
     });
 });
 ```
+
+Notice how we needed a new method for each action?
