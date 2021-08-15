@@ -40,7 +40,7 @@ Design Patterns are shared vocabulary. Understanding these design patterns will 
 
 For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
 
-In this tutorial, we're going to learn how redux works by building a simple todo application.
+In this tutorial, we're going to learn how redux works by building a simple list application.
 
 ### Requirements
 
