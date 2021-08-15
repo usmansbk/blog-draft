@@ -114,7 +114,7 @@ A cleaner way of preventing this would be grouping our app data as a single unit
 // State section
 let state = {
     todos: [],
-    books: [],
+    books: []
 };
 let counter = 0; // Just a useless variable
 ```
@@ -170,7 +170,7 @@ This approach is bad because our `submit` handler knows too much about our state
 // state section 
 let state = {
     todos: {}, // Now an object literal
-    books: [],
+    books: []
 };
 ```
 
@@ -189,7 +189,7 @@ This is achieved by closing the state in a function and returning an object with
 function createStore() {
     let state = {
         todos: [],
-        books: [],
+        books: []
     };
 
     return { // store object
@@ -228,14 +228,14 @@ By following good OOP practice, we can create a method for each action.
 function createStore() {
     let state = {
         todos: [],
-        books: [],
+        books: []
     };
 
     const addTodo = (text) => {
         const todo = {
             id: Date.now(),
             text,
-            completed: false,
+            completed: false
         };
         state.todos.push(todo);
     };
@@ -254,7 +254,7 @@ function createStore() {
     return {
         addTodo,
         deleteTodo,
-        toggleTodo,
+        toggleTodo
     };
 }
 
@@ -286,14 +286,14 @@ Instead of calling different methods for different actions. We could invoke a si
 function createStore() {
     let state = {
         todos: [],
-        books: [],
+        books: []
     };
 
     const addTodo = (text) => {
         const todo = {
             id: Date.now(),
             text,
-            completed: false,
+            completed: false
         };
         state.todos.push(todo);
     };
@@ -332,9 +332,11 @@ window.addEventListener('load', () => {
         const todoInput = todoForm.elements.todo;
         const action = {
             type: 'add-todo',
-            text: todoInput.value;
+            text: todoInput.value
         };
         store.dispatch(action);
     });
 });
 ```
+
+An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using action. So, you see, the view and state are loosely coupled!

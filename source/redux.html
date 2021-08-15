@@ -25,19 +25,59 @@
         <ul id="books"></ul>
     </section>
     <script>
-        let state = {
-            todos: [],
-            books: [],
-        };
+        // State section
+        function createStore() {
+            let state = {
+                todos: [],
+                books: [],
+            };
 
+            const addTodo = (text) => {
+                const todo = {
+                    id: Date.now(),
+                    text,
+                    completed: false,
+                };
+                state.todos.push(todo);
+            };
+
+            const deleteTodo = (id) => {
+                state.todos = state.todos.filter((todo) => todo.id !== id);
+            };
+
+            const toggleTodo = (id) => {
+                const todo = state.todos.find((todo) => todo.id === id);
+                if (todo) {
+                    todo.completed = !todo.completed
+                }
+            };
+
+            const dispatch = (action) => {
+                // call the right function to handle action
+                if (action.type === 'add-todo') {
+                    addTodo(action.text);
+                }
+            };
+
+            return {
+                dispatch
+            };
+        }
+
+        const store = createStore();
+
+        // UI section
         window.addEventListener('load', () => {
             const todoForm = document.getElementById('add-todo');
 
             todoForm.addEventListener('submit', (event) => {
                 event.preventDefault();
                 const todoInput = todoForm.elements.todo;
-                const description = todoInput.value;
-                console.log(description);
+                const action = {
+                    type: 'add-todo',
+                    text: todoInput.value,
+                };
+                store.dispatch(action);
             });
         });
     </script>
