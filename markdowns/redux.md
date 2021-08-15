@@ -164,11 +164,7 @@ todoForm.addEventListener('submit', (event) => {
 });
 ```
 
-This approach is bad because our `submit` handler knows too much about our state tree.
-
-Setting the ID and completed status of a Todo should be the responsibilty of the state, not the UI event handler.
-
-Also, imagine we later decided to change our state tree to this:
+This approach is bad because our `submit` handler knows too much about our state tree. Imagine we later decided to change our state tree to this:
 
 ```js
 // state section 
@@ -178,4 +174,6 @@ let state = {
 };
 ```
 
-This will break our UI because it depends on `state.todos` being an Array object. We need to prevent this kind of dependency between state and view.
+This will break our UI because it depends on `state.todos` being an Array object. We can say our UI is tightly coupled to our state. Tight coupling is a sign of bad code.
+
+We should always strive for loosely coupled code. Two things are loosely coupled, if they have very little knowledge of each other.
