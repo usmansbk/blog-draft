@@ -278,3 +278,63 @@ It seems we will need new methods for the book state later. In fact, we can expe
 Invoking many store methods in our UI code increases the dependency between the view and store. Remember, we should always strive for loose coupling.
 
 ## Actions
+
+Instead of calling different methods for different actions. We could invoke a single method, passing it a request object containing the type of action we would like to perform and the required data.
+
+```js
+// State section
+function createStore() {
+    let state = {
+        todos: [],
+        books: [],
+    };
+
+    const addTodo = (text) => {
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false,
+        };
+        state.todos.push(todo);
+    };
+
+    const deleteTodo = (id) => {
+        state.todos = state.todos.filter((todo) => todo.id !== id);
+    };
+
+    const toggleTodo = (id) => {
+        const todo = state.todos.find((todo) => todo.id === id);
+        if (todo) {
+            todo.completed = !todo.completed
+        }
+    };
+
+    const dispatch = (action) => {
+        // call the right function to handle action
+        if (action.type === 'add-todo') {
+            addTodo(action.text);
+        }
+    };
+
+    return {
+        dispatch
+    };
+}
+
+const store = createStore();
+
+// UI section
+window.addEventListener('load', () => {
+    const todoForm = document.getElementById('add-todo');
+
+    todoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const todoInput = todoForm.elements.todo;
+        const action = {
+            type: 'add-todo',
+            text: todoInput.value;
+        };
+        store.dispatch(action);
+    });
+});
+```
