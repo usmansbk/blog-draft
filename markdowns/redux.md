@@ -29,22 +29,33 @@ When you use the Command Pattern, you end up with a log of small classes.
 
 Actions are request objects to a reciever/command -->
 
-When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it is designed. Instead they try to figure out how to make it work with React.
+When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it is designed.
 
-Like all well designed libraries and frameworks, Redux too is a combination of design patterns.
+Like all well designed libraries and frameworks, Redux too is an implementation of design patterns.
 
 - Observer Pattern
 - Command Pattern
 
-Design Patterns are shared vocabulary. Understanding these design patterns will give us a good mental model of Redux. Don't worry if you don't know these patterns yet, we'll be learning them in this tutorial.
+Design Patterns are shared vocabulary. Understanding these design patterns will give you a good mental model of Redux. Don't worry if you don't know these patterns yet, we'll be learning them in this tutorial.
 
 For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
 
-In this Redux tutorial, you will learn how redux works by building a simple redux clone step by step. Doing this will help you in demystifying the library.
+In this tutorial, we're going to learn how redux works by building a simple todo application.
 
-## Structure
+### Requirements
 
-Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list that allows us to Add, Remove, and Toggle todos. The second is a goals list that allows us to Add and Remove our weekly goals.
+- The UI should consist of two main sections: Todos and Goals
+- Each section should consist of 3 parts:
+  - An input box to let the user type in the new item
+  - A button to add the item
+  - A list of all the exisiting items
+- Todo and Goal items should have unique IDs
+- We should be able to delete Todo and Goal items
+- Clicking a Todo item should mark it as completed
+
+The final app should look like this:
+
+[screenshot](./app_screenshot.png)
 
 ```html
 <!DOCTYPE html>
@@ -79,7 +90,7 @@ Our HTML will contain two kinds of `<ul>` list. The first is a normal Todo list 
 
 ## Seperation of Concern
 
-One of the core principles of good software design is the separation of concerns. This means we minimize mixing UI code with State logic code. Example:
+One of the core principles of good software design is the separation of concerns. This means we shouldn't mix UI code with State logic code. Like this:
 
 ```js
 const todos = []; // state
@@ -96,7 +107,7 @@ function addTodo() {
 }
 ```
 
-The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally accesses the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test, debug, and manage. To ensure we stick to this principle, we'll be separating our JS code into two sections.
+The `addTodo` function is bad because it does more than one thing. It updates the state, manipulates the DOM, and finally accesses the local storage. It doesn't really do one thing as the name specifies. This makes it hard to test, debug, and manage. To ensure we stick to this principle, we'll be sectioning our JS code into two parts.
 
 ```html
 <script>
@@ -108,11 +119,11 @@ The `addTodo` function is bad because it does more than one thing. It updates th
 </script>
 ```
 
-The State section will not manipulate the DOM or access the UI section, while the UI section will handle DOM manipulation. Since the UI needs to display and update the state, we need to create a way to access it from the UI section without breaking the "Separation of Concern" principle.
+The top-half will handle the application state logic, while the bottom-half will manage the UI.
 
 ## State Tree
 
-Our app will make use of two kinds of data. The `todos` and `goals`. A naive way of storing our application data would be declaring each as a variable.
+Conceptually, there are two kinds of data in our application. The `todos` and `goals`. A naive way of storing our application data would be declaring them as variables.
 
 ```js
 // State section
@@ -130,7 +141,7 @@ let counter = 0;
 
 This makes it difficult to understand. Is the `counter` variable part of the application data or not?
 
-A cleaner way of preventing this would be grouping our app data as a single unit. This makes it easier to differentiate application data from other variables.
+A clean way of preventing this would be grouping our app data as a single unit. This makes it easier to differentiate application data from other variables.
 
 ```js
 // State manipulation section
@@ -154,10 +165,7 @@ window.addEventListener('load', () => {
     todoForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
-        const todo = {
-            id: Date.now(),
-            description: totoInput.value,
-        };
+        const description = todoInput.value;
     });
 });
 ```
@@ -175,15 +183,12 @@ The UI code should never directly access our state tree like this:
 todoForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const todoInput = todoForm.elements.todo;
-    const todo = {
-        id: Date.now(),
-        description: totoInput.value,
-    };
-    state.todos.push(todo); // Directly accessing the state tree
+    const description = todoInput.value;
+    state.todos.push(description); // Directly accessing the state tree
 });
 ```
 
-Doing that makes the code hard to manage later. Imagine we decided to rename `state.todos` to `state.todolist`. Now we have to go through all of our code and update the references.
+Doing that makes the code difficult to manage later. Imagine we decided to rename `state.todos` to `state.todolist`. Now we have to go through all our code and update the references.
 
 Also, nothing prevents a new Team member from doing something like this:
 
@@ -196,6 +201,6 @@ todoForm.addEventListener('submit', (event) => {
         id: Date.now(),
         description: totoInput.value,
     };
-    state.todos = todo; // Directly accessing the state tree
+    state.todos = todo; // Replacing the state tree 
 });
 ```
