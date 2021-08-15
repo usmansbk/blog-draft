@@ -214,3 +214,9 @@ window.addEventListener('load', () => {
 Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods. Keeping them loosely coupled.
 
 ### Updating the State
+
+Now, we need away to update our state. Based on our application requirements, we should be able to do the following:
+
+- Add a Todo item
+- Delete an Item
+- Mark completed todo
