@@ -123,7 +123,7 @@ The `state` variable is called a **State Tree**. A state tree is an object that 
 
 There should be only one State Tree in an application ― A single centralized place to contain the global state in our application.
 
-### Adding Todo
+### Updating the State (First Attempt)
 
 Let's start adding Todo items to our State by connecting it to our UI.
 
@@ -180,7 +180,7 @@ One of the software design principles is striving for loosely coupled design bet
 
 ## Store
 
-We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy is your TV. The electrical circuit is hidden inside the TV and we only control it via public remote control. This is called **Data Encapsulation**.
+We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy is a TV. The electrical circuit is hidden inside the TV and we only control it via public remote control. This is called **Data Encapsulation**.
 
 This is achieved by closing the state in a function and returning an object with public methods to access the data. The returned object is called a store.
 
@@ -211,7 +211,7 @@ window.addEventListener('load', () => {
 });
 ```
 
-Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods. Keeping them loosely coupled.
+Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods. Keeping the state and view code loosely coupled.
 
 ### Updating the State
 
