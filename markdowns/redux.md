@@ -220,3 +220,55 @@ Now, we need away to update our state. Based on our application requirements, we
 - Add a Todo item
 - Delete an Item
 - Mark completed todo
+
+By following good OOP practice, we can create a method for each action.
+
+```js
+// State section
+function createStore() {
+    let state = {
+        todos: [],
+        books: [],
+    };
+
+    const addTodo = (text) => {
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false,
+        };
+        state.todos.push(todo);
+    };
+
+    const deleteTodo = (id) => {
+        state.todos = state.todos.filter((todo) => todo.id !== id);
+    };
+
+    const toggleTodo = (id) => {
+        const todo = state.todos.find((todo) => todo.id === id);
+        if (todo) {
+            todo.completed = !todo.completed
+        }
+    };
+
+    return {
+        addTodo,
+        deleteTodo,
+        toggleTodo,
+    };
+}
+
+const store = createStore();
+
+// UI section
+window.addEventListener('load', () => {
+    const todoForm = document.getElementById('add-todo');
+
+    todoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const todoInput = todoForm.elements.todo;
+        const text = todoInput.value;
+        store.addTodo(text);
+    });
+});
+```
