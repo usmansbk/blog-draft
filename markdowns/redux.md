@@ -311,7 +311,7 @@ function createStore() {
 
     const dispatch = (action) => {
         // call the right function to handle action
-        if (action.type === 'add-todo') {
+        if (action.type === 'ADD_TODO') {
             addTodo(action.text);
         }
     };
@@ -331,7 +331,7 @@ window.addEventListener('load', () => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
         const action = {
-            type: 'add-todo',
+            type: 'ADD_TODO',
             text: todoInput.value
         };
         store.dispatch(action);
