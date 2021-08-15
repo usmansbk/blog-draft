@@ -182,7 +182,7 @@ One of the software design principles is striving for loosely coupled design bet
 
 We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy is your TV. The electrical circuit is hidden inside the TV and we only control it via public remote control. This is called **Data Encapsulation**.
 
-This is achieved in JavaScript by closing the state in a function and returning an object with public methods to access the data. We call the returned object a store.
+This is achieved by closing the state in a function and returning an object with public methods to access the data. The returned object is called a store.
 
 ```js
 // state section
@@ -199,3 +199,5 @@ function createStore() {
 
 const store = createStore();
 ```
+
+Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done through the store object supported methods.
