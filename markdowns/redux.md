@@ -211,6 +211,6 @@ window.addEventListener('load', () => {
 });
 ```
 
-Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods.
+Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods. Keeping them loosely coupled.
 
 ### Updating the State
