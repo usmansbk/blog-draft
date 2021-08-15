@@ -273,4 +273,8 @@ window.addEventListener('load', () => {
 });
 ```
 
-Notice how we needed a new method for each action?
+It seems we will need new methods for the book state later. In fact, we can expect more methods in the future to support new features (pun intended).
+
+Invoking many store methods in our UI code increases the dependency between the view and store. Remember, we should always strive for loose coupling.
+
+## Actions
