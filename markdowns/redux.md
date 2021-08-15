@@ -88,7 +88,7 @@ The final app should look like this:
 </html>
 ```
 
-## Seperation of Concern
+## Seperation of Concerns
 
 One of the core principles of good software design is the separation of concerns. This means we shouldn't mix UI code with State logic code. Like this:
 
