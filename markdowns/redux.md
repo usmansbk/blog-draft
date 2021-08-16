@@ -454,3 +454,5 @@ const dispatch = (action) => {
     todoReducer(state.todos, action);
 };
 ```
+
+This reduces our chances of introducing the previous bug by introducing a bug in the process. ��
