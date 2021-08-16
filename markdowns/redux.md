@@ -174,13 +174,13 @@ let state = {
 };
 ```
 
-This will break our UI because it depends on `state.todos` being an Array object. We can say our UI is tightly coupled to our state. Tight coupling is a sign of bad code.
+This will break our UI because it depends on `state.todos` being an Array object. We can say our UI is tightly coupled to our state. Tight coupling leads to bad code.
 
-One of the software design principles is striving for loosely coupled design between objects that interact. Two things are loosely coupled if they have very little knowledge of each other. Minimizing the interdependency between the two of them.
+One of the software design principles is striving for loosely coupled design between objects that interact. Two things are loosely coupled if they have very little knowledge of each other.
 
 ## Store
 
-We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy is a TV. The electrical circuit is hidden inside the TV and we only control it via public remote control. This is called **Data Encapsulation**.
+We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy would be a TV. The electrical circuit is hidden inside the TV, and we only control it via public remote control. This is called Data Encapsulation.
 
 This is achieved by closing the state in a function and returning an object with public methods to access the data. The returned object is called a store.
 
