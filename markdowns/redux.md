@@ -6,13 +6,13 @@ tags: Redux, Design Patterns
 //cover_image: https://direct_url_to_image.jpg
 ---
 
-When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it is designed.
-
 Like all well designed libraries and frameworks, Redux makes use of design patterns (Observer Pattern) and good software design principles.
+
+By building our own state management from scratch following these principles and design patterns will help us in understanding redux.
 
 For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), where i try to give a good mental model of the pattern.
 
-In this tutorial, we're going to learn how redux fundamentals by building a simple redux clone.
+In this tutorial, we're going to learn redux by building a simple redux clone.
 
 ### Requirements
 
@@ -65,7 +65,6 @@ The final app should look like this:
 Conceptually, there are two kinds of data in our application. Two arrays of todo item objects and books item objects. A naive way of storing our application data would be declaring them as variables.
 
 ```js
-// State section
 let todos = [];
 let books = [];
 ```
@@ -78,12 +77,11 @@ let books = [];
 let counter = 0;
 ```
 
-This makes it difficult to understand. Is the `counter` variable part of the application data or not?
+This makes it difficult to understand. Is the `counter` variable part of the application state or not?
 
-A cleaner way of preventing this would be grouping our app data as a single unit. This makes it easier to keep track of our application state.
+A cleaner way of preventing this would be grouping our application state as a single unit. This makes it easier to keep track of.
 
 ```js
-// State section
 let state = {
     todos: [],
     books: []
@@ -93,7 +91,7 @@ let counter = 0; // Just a useless variable
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
 
-There should be only one State Tree in an application ― A single centralized place to contain the global state in our application.
+There should be only one State Tree in an application ― A single centralized place to contain the global state of our application.
 
 ### Updating the State (Naive Approach)
 
@@ -118,7 +116,7 @@ Based on the requirements, each todo item should have these fields:
 - text: the text the user typed in
 - completed: a boolean flag
 
-A naive approach of adding items would be directly doing it in the UI code.
+A naive approach of adding items would be directly updating the state tree in the UI code.
 
 ```js
 // Bad
@@ -138,14 +136,13 @@ todoForm.addEventListener('submit', (event) => {
 This approach is bad because our `submit` listener knows too much about our state tree. Imagine we later decided to change our state tree to this:
 
 ```js
-// state section 
 let state = {
     todos: {}, // Now an object literal
     books: []
 };
 ```
 
-This will break our UI because it depends on `state.todos` being an Array object. We can say our UI is tightly coupled to our state. Tight coupling leads to bad code.
+This will break our UI because it depends on `state.todos` being an Array object. We can say our UI is tightly coupled to our state, and tight coupling leads to bad code.
 
 One of the software design principles is striving for loosely coupled design between objects that interact. Two things are loosely coupled if they have very little knowledge of each other.
 
@@ -156,7 +153,6 @@ We can achieve loose coupling by hiding our state tree and only accessing it via
 This is achieved by closing the state tree in a function and returning an object with public methods to access the state. The returned object is called a **store**.
 
 ```js
-// State section
 function createStore() {
     let state = {
         todos: [],
@@ -197,10 +193,9 @@ Now, we need away to update our state. Based on our application requirements, we
 - Delete an Item
 - Toggle completed todo
 
-By following good OOP practice, we can create a method for each action.
+By following good OOP practice, we can create methods to handle each action.
 
 ```js
-// State section
 function createStore() {
     let state = {
         todos: [],
@@ -249,7 +244,7 @@ window.addEventListener('load', () => {
 });
 ```
 
-It seems we will need new methods for the book state later. In fact, we can expect more methods in the future to support new features (pun intended).
+From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new features (pun intended).
 
 Invoking many store methods in our UI code increases the dependency between the view and store. Remember, we should always strive for loose coupling.
 
@@ -258,7 +253,6 @@ Invoking many store methods in our UI code increases the dependency between the 
 Instead of calling different methods for different actions, we can create a single public method that takes an object as an argument. The object will contain the type of action we would like to perform and any required data. The function will then delegate our request to the right handlers.
 
 ```js
-// State section
 function createStore() {
     let state = {
         todos: [],
@@ -321,22 +315,17 @@ window.addEventListener('load', () => {
 });
 ```
 
-An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using action.
+An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using actions.
 
 This only solves half of our problem. Notice that our `createStore` function will keep growing longer the more methods we add.
 
-We can solve this by following another design principle ― Separation of concerns. By abstracting the todo state actions, we keep our `createStore` function simple and short, making it maintainable.
+We can solve this by following another design principle ― Separation of concerns. By abstracting the todo actions logic, we keep our `createStore` function simple and short, making it maintainable.
 
 ## Updating the state (Reducer approach)
 
-Let's start by abstracting the Todo actions logic from the `createStore` function to a new function.
-
-We call this new function a **Reducer** because it takes our state and action and reduces it to a new state, similar to how Array `reduce` method works.
-
-This function will literally reduce the size of our `createStore` function.
+Let's start by abstracting the Todo actions logic from the `createStore` function into a new function.
 
 ```js
-// State section
 function todoReducer(state, action) {
     const addTodo = (todo) => {
         state.todos.push(todo);
@@ -379,7 +368,9 @@ function createStore() {
 }
 ```
 
-Also, notice how our arrow functions are so short that we could move their bodies to their respective `if` blocks.
+We call this new function a **Reducer** because it takes our state and action, and reduces it to a new state, similar to how Array `reduce` method works.
+
+Also, notice how our arrow functions are so short that we could move their bodies to their respective `if` blocks. We can improve on that.
 
 Let's refactor our function to keep it short.
 
@@ -400,7 +391,7 @@ function todoReducer(state, action) {
 
 Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
 
-Our `todoReducer` knows way too much about our state ― _Hello, Tight coupling_. This makes it easier to introduce bugs like this::
+Our reducer knows way too much about our state ― _Hello, Tight coupling_. This makes it easier to introduce bugs like this::
 
 ```js
 // Fire spitting bug
@@ -410,7 +401,7 @@ if (action.type === 'DELETE_TODO') {
 }
 ```
 
-We can prevent this by passing only the todos state as an argument to the `todoReducer` function. Forcing it to be responsible for only it's state.
+We can prevent this by passing only the todos state as an argument to the reducer function. Thereby, forcing it to be responsible for only todos state.
 
 ```js
 function todoReducer(todos, action) {
@@ -439,11 +430,14 @@ We've made our state tree and reducer loosely coupled. But we introduced another
 todos.filter((todo) => todo.id !== action.id);
 ```
 
-Unlike the array object `push` method, the `filter` method doesn't modify an array. It returns a new array of items that meet a certain criteria. This prevents our state from being updated.
+The `ADD_TODO` and `TOGGLE_TODO` actions both modify the existing `todos` state while the `DELETE_TODO` doesn't.
 
-A naive way of fixing this would be to return the modified or new state whenever an action is performed and assign it to the `todos` state.
+Unlike the array `push` method, the `filter` method doesn't modify an array. Instead, it returns a new array of items that meet a certain criteria. This prevents our state from being modified.
+
+A naive way of fixing this would be to return the modified and new state whenever an action is performed and assign it to the `todos` state.
 
 ```js
+// returning the modified and new state
 function todoReducer(todos, action) {
     if (action.type === 'ADD_TODO') {
         todos.push(action.todo);
@@ -468,7 +462,9 @@ const dispatch = (action) => {
 };
 ```
 
-But directly modifying the existing state comes with a nonobvious problem. It makes it difficult to predict our state. Let's understand what this means with a few examples:
+But doing this introduces a nonobvious problem. It makes it difficult to predict our reducer function.
+
+Let's understand what this means with the help of a few examples:
 
 ```js
 function square(num) {
@@ -486,7 +482,7 @@ Calling the `square` function with the same argument will always return the same
 Let's look at a more complex example.
 
 ```js
-// This function will return an array of the square of numbers
+// This function will return an array of square of numbers
 function squares(numbers) {
     let result = [];
 
@@ -509,11 +505,11 @@ The `squares` function will also return the same result if the same arguments ar
 Now, let's look at a different implementation of the `squares` function.
 
 ```js
-// This function will return an array of the square of numbers
+// This function will return an array of square of numbers
 function squares2(numbers) {
     for (let i = 0; i < numbers.length; i++) {
         const num = numbers[i];
-        numbers[i] = num * num;
+        numbers[i] = num * num; // modifying the existing array
     } 
 
     return numbers;
@@ -533,13 +529,15 @@ In functional programming, `square` and `squares` are called **pure functions**.
 
 ### Pure Functions
 
-- Returns the same result if the same arguments are passed
-- Depend only on the arguments passed into them
-- Do not produce any side effects, such as mutating external data or API requests
+By definition, pure functions:
 
-Our reducer function is not pure because it modifies the state each time it is called. We need our application to be as predictable as possible.
+- Return the same result if the same arguments are passed
+- Depend solely on the arguments passed into them
+- Do not produce any side effects, such as mutating external data or making API requests
 
-Let us go ahead and convert our reducer to a pure function by returning a new state each time it is called instead of modifying the existing one.
+Our reducer is not pure because it modifies the state each time it is called. We need our application to be as predictable as possible.
+
+Let us go ahead and convert our reducer into a pure function by returning a new state each time an action is performed.
 
 ```js
 function todoReducer(todos, action) {
