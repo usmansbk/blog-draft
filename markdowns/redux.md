@@ -427,7 +427,7 @@ function todoReducer(todos, logic) {
 }
 ```
 
-We've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
+Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
 
 Our `todoReducer` knows way too much about our state ― Hello, Tight coupling. This makes it easy to introduce bugs like this::
 
