@@ -429,7 +429,7 @@ function todoReducer(state, action) {
 
 Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
 
-Our `todoReducer` knows way too much about our state ― Hello, Tight coupling. This makes it easy to introduce bugs like this::
+Our `todoReducer` knows way too much about our state ― _Hello, Tight coupling_. This makes it easy to introduce bugs like this::
 
 ```js
 // Fire spitting bug
