@@ -8,11 +8,11 @@ tags: Redux, Design Patterns
 
 In this tutorial, we're going to learn Redux by building a simple redux clone to manage the state of our list application.
 
-The objective is to understand core Redux, hence we'll be using only HTML and vanilla JavaScript (No React).
+The objective is to understand core Redux. Hence we'll be using only HTML and vanilla JavaScript (No React).
 
 Like all well-designed libraries and frameworks, Redux too makes use of design pattern (Observer Pattern) and follows the software design principles.
 
-For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), where I try to give a good mental model of the pattern.
+For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), to gain a good mental model of the pattern.
 
 ### Requirements
 
