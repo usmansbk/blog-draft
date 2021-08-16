@@ -351,10 +351,71 @@ We can solve this by following another design principle ― Separation of concer
 
 ## Updating the state (Reducer approach)
 
-Lets start by abstracting the Todo actions logic from the `createStore` function to a new function named `todoReducer`.
+Lets start by abstracting the Todo actions logic from the `createStore` function to a new function named `todoReducer`. This will literally reduce the size of our `createStore` function.
 
 ```js
 // State section
+function todoReducer(state, logic) {
+    const addTodo = (text) => {
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
+        state.todos.push(todo);
+    };
+
+    const deleteTodo = (id) => {
+        state.todos = state.todos.filter((todo) => todo.id !== id);
+    };
+
+    const toggleTodo = (id) => {
+        const todo = state.todos.find((todo) => todo.id === id);
+        if (todo) {
+            todo.completed = !todo.completed
+        }
+    };
+
+    if (action.type === 'ADD_TODO') {
+        addTodo(action.text);
+    } else if (action.type === 'DELETE_TODO') {
+        deleteTodo(action.id);
+    } else if (action.type === 'TOGGLE_TODO') {
+        toggleTodo(action.id);
+    }
+}
+
+function createStore() {
+    let state = {
+        todos: [],
+        books: []
+    };
+
+    const dispatch = (action) => {
+        // We now delegate action to the function
+        todoReducer(state, action);
+    };
+
+    return {
+        dispatch
+    };
+}
+```
+
+We've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
+
+Our `todoReducer` knows way too much about our state ― Hello, Tight coupling. This makes it easy to introduce bugs like this::
+
+```js
+// Overwriting the books state instead of todos
+const deleteTodo = (id) => {
+    state.books = state.todos.filter((todo) => todo.id !== id);
+};
+```
+
+We can prevent this by passing only the todos state as an argument to the `todoReducer` function.
+
+```js
 function todoReducer(todos, logic) {
     const addTodo = (text) => {
         const todo = {
@@ -385,19 +446,10 @@ function todoReducer(todos, logic) {
     }
 }
 
-function createStore() {
-    let state = {
-        todos: [],
-        books: []
-    };
 
-    const dispatch = (action) => {
-        // We now delegate action to the function
-        todoReducer(state.todos, action);
-    };
-
-    return {
-        dispatch
-    };
-}
+// ...Inside the createStore function
+const dispatch = (action) => {
+    // We now delegate action to the function
+    todoReducer(state.todos, action);
+};
 ```
