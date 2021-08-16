@@ -212,9 +212,7 @@ function createStore() {
 
   const toggleTodo = (id) => {
     const todo = state.todos.find((todo) => todo.id === id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
+    todo.completed = !todo.completed;
   };
 
   return {
@@ -269,9 +267,7 @@ function createStore() {
 
   const toggleTodo = (id) => {
     const todo = state.todos.find((todo) => todo.id === id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
+    todo.completed = !todo.completed;
   };
 
   const dispatch = (action) => {
@@ -337,9 +333,7 @@ function todoReducer(state, action) {
 
   const toggleTodo = (id) => {
     const todo = state.todos.find((todo) => todo.id === id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
+    todo.completed = !todo.completed;
   };
 
   if (action.type === "ADD_TODO") {
@@ -382,9 +376,7 @@ function todoReducer(state, action) {
     state.todos = state.todos.filter((todo) => todo.id !== action.id);
   } else if (action.type === "TOGGLE_TODO") {
     const todo = state.todos.find((todo) => todo.id === action.id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
+    todo.completed = !todo.completed;
   }
 }
 ```
@@ -411,9 +403,7 @@ function todoReducer(todos, action) {
     todos.filter((todo) => todo.id !== action.id);
   } else if (action.type === "TOGGLE_TODO") {
     const todo = todos.find((todo) => todo.id === action.id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
+    todo.completed = !todo.completed;
   }
 }
 
@@ -447,9 +437,7 @@ function todoReducer(todos, action) {
     return todos.filter((todo) => todo.id !== action.id);
   } else if (action.type === "TOGGLE_TODO") {
     const todo = todos.find((todo) => todo.id === action.id);
-    if (todo) {
-      todo.completed = !todo.completed;
-    }
+    todo.completed = !todo.completed;
 
     return todos;
   }
@@ -547,18 +535,15 @@ function todoReducer(todos, action) {
     return todos.filter((todo) => todo.id !== action.id);
   } else if (action.type === "TOGGLE_TODO") {
     const index = todos.findIndex((todo) => todo.id === action.id);
+    const todo = todos[index];
 
-    if (index !== -1) {
-      const todo = todos[index];
+    const newState = [...todos];
+    newState[index] = {
+      ...todo,
+      completed: !todo.completed,
+    };
 
-      const newState = [...todos];
-      newState[index] = {
-        ...todo,
-        completed: !todo.completed,
-      };
-
-      return newState;
-    }
+    return newState;
   }
 
   // return exisiting state if nothing changed
