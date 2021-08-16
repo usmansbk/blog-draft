@@ -404,7 +404,7 @@ function createStore() {
 
 Also, notice how our arrow functions are so short that we could move their bodies to their respective `if` blocks.
 
-Let's refactor our function to keep it dry.
+Let's refactor our function to keep it simple.
 
 ```js
 function todoReducer(state, logic) {
