@@ -402,7 +402,7 @@ function createStore() {
 }
 ```
 
-Also, notice how the arrow functions and action types have the same names. This is a form of repetition, and we should always try to avoid that.
+Also, notice how our arrow functions are so short that we could move their bodies to their respective `if` blocks.
 
 Let's refactor our function to keep it dry.
 
@@ -468,33 +468,3 @@ const dispatch = (action) => {
     todoReducer(state.todos, action);
 };
 ```
-
-Now, take a look at the `deleteTodo` function again. Will the state be updated when we delete an item?
-
-```js
-// ...Inside the todoReducer function
-const deleteTodo = (id) => {
-    todos = todos.filter((todo) => todo.id !== id);
-};
-```
-
-You can test this by running the following code in your console:
-
-```js
-// Test
-let state = {
-    todos: [1, 2, 3, 4]
-};
-
-const deleteTodo = (todos, id) => {
-    todos = todos.filter((todo) => todo.id !== id);
-};
-
-deleteTodo(state.todos, 2);
-
-console.log(state.todos);
-```
-
-![Console](./imgs/redux-state-test.png)
-
-As you can see, nothing changed after calling the `deleteTodo` function.
