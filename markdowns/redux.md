@@ -6,7 +6,7 @@ tags: Redux, Design Patterns
 //cover_image: https://direct_url_to_image.jpg
 ---
 
-Like all well designed libraries and frameworks, Redux makes use of design patterns (Observer Pattern) and good software design principles.
+Like all well designed libraries and frameworks, Redux too is a combination of design patterns (Observer & Command Patterns) and software design principles.
 
 By building our own state management from scratch following these principles and design patterns will help us in understanding redux.
 
@@ -32,31 +32,31 @@ The final app should look like this:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Simply Redux</title>
-    </head>
-    <body>
-        <section>
-            <h2>Todos</h2>
-            <form id="add-todo">
-                <input name="todo" required />
-                <button type="submit">Add To-Do</button>
-            </form>
-            <ul id="todos"></ul>
-        </section>
+  <head>
+    <title>Simply Redux</title>
+  </head>
+  <body>
+    <section>
+      <h2>Todos</h2>
+      <form id="add-todo">
+        <input name="todo" required />
+        <button type="submit">Add To-Do</button>
+      </form>
+      <ul id="todos"></ul>
+    </section>
 
-        <section>
-            <h2>Books</h2>
-            <form id="add-book">
-                <input name="book" required />
-                <button type="submit">Add Book</button>
-            </form>
-            <ul id="books"></ul>
-        </section>
-    </body>
-    <script>
-        // All our JavaScript goes here
-    </script>
+    <section>
+      <h2>Books</h2>
+      <form id="add-book">
+        <input name="book" required />
+        <button type="submit">Add Book</button>
+      </form>
+      <ul id="books"></ul>
+    </section>
+  </body>
+  <script>
+    // All our JavaScript goes here
+  </script>
 </html>
 ```
 
@@ -83,8 +83,8 @@ A cleaner way of preventing this would be grouping our application state as a si
 
 ```js
 let state = {
-    todos: [],
-    books: []
+  todos: [],
+  books: [],
 };
 let counter = 0; // Just a useless variable
 ```
@@ -99,14 +99,14 @@ Let's start adding Todo items to our State by connecting it to our UI.
 
 ```js
 // UI section
-window.addEventListener('load', () => {
-    const todoForm = document.getElementById('add-todo');
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
 
-    todoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const todoInput = todoForm.elements.todo;
-        const text = todoInput.value;
-    });
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+  });
 });
 ```
 
@@ -120,16 +120,16 @@ A naive approach of adding items would be directly updating the state tree in th
 
 ```js
 // Bad
-todoForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const todoInput = todoForm.elements.todo;
-    const text = todoInput.value;
-    const todo = {
-        id: Date.now(),
-        text,
-        completed: false
-    };
-    state.todos.push(todo);
+todoForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const todoInput = todoForm.elements.todo;
+  const text = todoInput.value;
+  const todo = {
+    id: Date.now(),
+    text,
+    completed: false,
+  };
+  state.todos.push(todo);
 });
 ```
 
@@ -137,8 +137,8 @@ This approach is bad because our `submit` listener knows too much about our stat
 
 ```js
 let state = {
-    todos: {}, // Now an object literal
-    books: []
+  todos: {}, // Now an object literal
+  books: [],
 };
 ```
 
@@ -154,32 +154,32 @@ This is achieved by closing the state tree in a function and returning an object
 
 ```js
 function createStore() {
-    let state = {
-        todos: [],
-        books: []
-    };
+  let state = {
+    todos: [],
+    books: [],
+  };
 
-    return { // store object
-
-    };
+  return {
+    // store object
+  };
 }
 
 const store = createStore();
 
 // UI section
-window.addEventListener('load', () => {
-    const todoForm = document.getElementById('add-todo');
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
 
-    todoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const todoInput = todoForm.elements.todo;
-        const text = todoInput.value;
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
-    });
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+  });
 });
 ```
 
@@ -197,50 +197,50 @@ By following good OOP practice, we can create methods to handle each action.
 
 ```js
 function createStore() {
-    let state = {
-        todos: [],
-        books: []
-    };
+  let state = {
+    todos: [],
+    books: [],
+  };
 
-    const addTodo = (todo) => {
-        state.todos.push(todo);
-    };
+  const addTodo = (todo) => {
+    state.todos.push(todo);
+  };
 
-    const deleteTodo = (id) => {
-        state.todos = state.todos.filter((todo) => todo.id !== id);
-    };
+  const deleteTodo = (id) => {
+    state.todos = state.todos.filter((todo) => todo.id !== id);
+  };
 
-    const toggleTodo = (id) => {
-        const todo = state.todos.find((todo) => todo.id === id);
-        if (todo) {
-            todo.completed = !todo.completed
-        }
-    };
+  const toggleTodo = (id) => {
+    const todo = state.todos.find((todo) => todo.id === id);
+    if (todo) {
+      todo.completed = !todo.completed;
+    }
+  };
 
-    return {
-        addTodo,
-        deleteTodo,
-        toggleTodo
-    };
+  return {
+    addTodo,
+    deleteTodo,
+    toggleTodo,
+  };
 }
 
 const store = createStore();
 
 // UI section
-window.addEventListener('load', () => {
-    const todoForm = document.getElementById('add-todo');
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
 
-    todoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const todoInput = todoForm.elements.todo;
-        const text = todoInput.value;
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
-        store.addTodo(todo);
-    });
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+    store.addTodo(todo);
+  });
 });
 ```
 
@@ -254,64 +254,64 @@ Instead of calling different methods for different actions, we can create a sing
 
 ```js
 function createStore() {
-    let state = {
-        todos: [],
-        books: []
-    };
+  let state = {
+    todos: [],
+    books: [],
+  };
 
-    const addTodo = (todo) => {
-        state.todos.push(todo);
-    };
+  const addTodo = (todo) => {
+    state.todos.push(todo);
+  };
 
-    const deleteTodo = (id) => {
-        state.todos = state.todos.filter((todo) => todo.id !== id);
-    };
+  const deleteTodo = (id) => {
+    state.todos = state.todos.filter((todo) => todo.id !== id);
+  };
 
-    const toggleTodo = (id) => {
-        const todo = state.todos.find((todo) => todo.id === id);
-        if (todo) {
-            todo.completed = !todo.completed
-        }
-    };
+  const toggleTodo = (id) => {
+    const todo = state.todos.find((todo) => todo.id === id);
+    if (todo) {
+      todo.completed = !todo.completed;
+    }
+  };
 
-    const dispatch = (action) => {
-        // call the right function to handle action
-        if (action.type === 'ADD_TODO') {
-            addTodo(action.todo);
-        } else if (action.type === 'DELETE_TODO') {
-            deleteTodo(action.id);
-        } else if (action.type === 'TOGGLE_TODO') {
-            toggleTodo(action.id);
-        }
-    };
+  const dispatch = (action) => {
+    // call the right function to handle action
+    if (action.type === "ADD_TODO") {
+      addTodo(action.todo);
+    } else if (action.type === "DELETE_TODO") {
+      deleteTodo(action.id);
+    } else if (action.type === "TOGGLE_TODO") {
+      toggleTodo(action.id);
+    }
+  };
 
-    return {
-        dispatch
-    };
+  return {
+    dispatch,
+  };
 }
 
 const store = createStore();
 
 // UI section
-window.addEventListener('load', () => {
-    const todoForm = document.getElementById('add-todo');
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
 
-    todoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const todoInput = todoForm.elements.todo;
-        const text = todoInput.value;
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
 
-        const action = {
-            type: 'ADD_TODO',
-            todo,
-        };
-        store.dispatch(action);
-    });
+    const action = {
+      type: "ADD_TODO",
+      todo,
+    };
+    store.dispatch(action);
+  });
 });
 ```
 
@@ -327,44 +327,44 @@ Let's start by abstracting the Todo actions logic from the `createStore` functio
 
 ```js
 function todoReducer(state, action) {
-    const addTodo = (todo) => {
-        state.todos.push(todo);
-    };
+  const addTodo = (todo) => {
+    state.todos.push(todo);
+  };
 
-    const deleteTodo = (id) => {
-        state.todos = state.todos.filter((todo) => todo.id !== id);
-    };
+  const deleteTodo = (id) => {
+    state.todos = state.todos.filter((todo) => todo.id !== id);
+  };
 
-    const toggleTodo = (id) => {
-        const todo = state.todos.find((todo) => todo.id === id);
-        if (todo) {
-            todo.completed = !todo.completed
-        }
-    };
-
-    if (action.type === 'ADD_TODO') {
-        addTodo(action.todo);
-    } else if (action.type === 'DELETE_TODO') {
-        deleteTodo(action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        toggleTodo(action.id);
+  const toggleTodo = (id) => {
+    const todo = state.todos.find((todo) => todo.id === id);
+    if (todo) {
+      todo.completed = !todo.completed;
     }
+  };
+
+  if (action.type === "ADD_TODO") {
+    addTodo(action.todo);
+  } else if (action.type === "DELETE_TODO") {
+    deleteTodo(action.id);
+  } else if (action.type === "TOGGLE_TODO") {
+    toggleTodo(action.id);
+  }
 }
 
 function createStore() {
-    let state = {
-        todos: [],
-        books: []
-    };
+  let state = {
+    todos: [],
+    books: [],
+  };
 
-    const dispatch = (action) => {
-        // We now delegate action to the function
-        todoReducer(state, action);
-    };
+  const dispatch = (action) => {
+    // We now delegate action to the function
+    todoReducer(state, action);
+  };
 
-    return {
-        dispatch
-    };
+  return {
+    dispatch,
+  };
 }
 ```
 
@@ -376,16 +376,16 @@ Let's refactor our function to keep it short.
 
 ```js
 function todoReducer(state, action) {
-    if (action.type === 'ADD_TODO') {
-        state.todos.push(action.todo);
-    } else if (action.type === 'DELETE_TODO') {
-        state.todos = state.todos.filter((todo) => todo.id !== action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        const todo = state.todos.find((todo) => todo.id === action.id);
-        if (todo) {
-            todo.completed = !todo.completed
-        }
+  if (action.type === "ADD_TODO") {
+    state.todos.push(action.todo);
+  } else if (action.type === "DELETE_TODO") {
+    state.todos = state.todos.filter((todo) => todo.id !== action.id);
+  } else if (action.type === "TOGGLE_TODO") {
+    const todo = state.todos.find((todo) => todo.id === action.id);
+    if (todo) {
+      todo.completed = !todo.completed;
     }
+  }
 }
 ```
 
@@ -395,9 +395,9 @@ Our reducer knows way too much about our state ― _Hello, Tight coupling_. This
 
 ```js
 // Fire spitting bug
-if (action.type === 'DELETE_TODO') {
-    // overwriting the books state instead of todos
-    state.books = state.todos.filter((todo) => todo.id !== id);
+if (action.type === "DELETE_TODO") {
+  // overwriting the books state instead of todos
+  state.books = state.todos.filter((todo) => todo.id !== id);
 }
 ```
 
@@ -405,22 +405,22 @@ We can prevent this by passing only the todos state as an argument to the reduce
 
 ```js
 function todoReducer(todos, action) {
-    if (action.type === 'ADD_TODO') {
-        todos.push(action.todo);
-    } else if (action.type === 'DELETE_TODO') {
-        todos.filter((todo) => todo.id !== action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        const todo = todos.find((todo) => todo.id === action.id);
-        if (todo) {
-            todo.completed = !todo.completed
-        }
+  if (action.type === "ADD_TODO") {
+    todos.push(action.todo);
+  } else if (action.type === "DELETE_TODO") {
+    todos.filter((todo) => todo.id !== action.id);
+  } else if (action.type === "TOGGLE_TODO") {
+    const todo = todos.find((todo) => todo.id === action.id);
+    if (todo) {
+      todo.completed = !todo.completed;
     }
+  }
 }
 
 // ...Inside the createStore function
 const dispatch = (action) => {
-    // We pass only the todos state 
-    todoReducer(state.todos, action);
+  // We pass only the todos state
+  todoReducer(state.todos, action);
 };
 ```
 
@@ -439,26 +439,26 @@ A naive way of fixing this would be to return the modified and new state wheneve
 ```js
 // returning the modified and new state
 function todoReducer(todos, action) {
-    if (action.type === 'ADD_TODO') {
-        todos.push(action.todo);
+  if (action.type === "ADD_TODO") {
+    todos.push(action.todo);
 
-        return todos;
-    } else if (action.type === 'DELETE_TODO') {
-        return todos.filter((todo) => todo.id !== action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        const todo = todos.find((todo) => todo.id === action.id);
-        if (todo) {
-            todo.completed = !todo.completed
-        }
-
-        return todos;
+    return todos;
+  } else if (action.type === "DELETE_TODO") {
+    return todos.filter((todo) => todo.id !== action.id);
+  } else if (action.type === "TOGGLE_TODO") {
+    const todo = todos.find((todo) => todo.id === action.id);
+    if (todo) {
+      todo.completed = !todo.completed;
     }
+
+    return todos;
+  }
 }
 
 // ...Inside the createStore function
 const dispatch = (action) => {
-    // We set todos state to the updated state
-    state.todos = todoReducer(state.todos, action);
+  // We set todos state to the updated state
+  state.todos = todoReducer(state.todos, action);
 };
 ```
 
@@ -468,7 +468,7 @@ Let's understand what this means with the help of a few examples:
 
 ```js
 function square(num) {
-    return num * num;
+  return num * num;
 }
 
 const sameNumber = 2;
@@ -484,20 +484,20 @@ Let's look at a more complex example.
 ```js
 // This function will return an array of square of numbers
 function squares(numbers) {
-    let result = [];
+  let result = [];
 
-    for (let i = 0; i < numbers.length; i++) {
-        const num = numbers[i];
-        result[i] = num * num;
-    } 
+  for (let i = 0; i < numbers.length; i++) {
+    const num = numbers[i];
+    result[i] = num * num;
+  }
 
-    return result;
+  return result;
 }
 
 const arrOfNumbers = [1, 2, 3];
-console.log(squares(arrOfNumbers)); // => [1, 4, 9] 
-console.log(squares(arrOfNumbers)); // => [1, 4, 9] 
-console.log(squares(arrOfNumbers)); // => [1, 4, 9] 
+console.log(squares(arrOfNumbers)); // => [1, 4, 9]
+console.log(squares(arrOfNumbers)); // => [1, 4, 9]
+console.log(squares(arrOfNumbers)); // => [1, 4, 9]
 ```
 
 The `squares` function will also return the same result if the same arguments are passed to it.
@@ -507,17 +507,17 @@ Now, let's look at a different implementation of the `squares` function.
 ```js
 // This function will return an array of square of numbers
 function squares2(numbers) {
-    for (let i = 0; i < numbers.length; i++) {
-        const num = numbers[i];
-        numbers[i] = num * num; // modifying the existing array
-    } 
+  for (let i = 0; i < numbers.length; i++) {
+    const num = numbers[i];
+    numbers[i] = num * num; // modifying the existing array
+  }
 
-    return numbers;
+  return numbers;
 }
 
 const arrOfNumbers = [1, 2, 3];
 console.log(squares2(arrOfNumbers)); // => [ 1, 4, 9]
-console.log(squares2(arrOfNumbers)); // => [ 1, 16, 81] 
+console.log(squares2(arrOfNumbers)); // => [ 1, 16, 81]
 console.log(squares2(arrOfNumbers)); // => [ 1, 256, 6561]
 ```
 
@@ -541,95 +541,92 @@ Let us go ahead and convert our reducer into a pure function by returning a new 
 
 ```js
 function todoReducer(todos, action) {
-    if (action.type === 'ADD_TODO') {
-        return [...todos, action.todo];
-    } else if (action.type === 'DELETE_TODO') {
-        return todos.filter((todo) => todo.id !== action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        const index = todos.findIndex((todo) => todo.id === action.id);
+  if (action.type === "ADD_TODO") {
+    return [...todos, action.todo];
+  } else if (action.type === "DELETE_TODO") {
+    return todos.filter((todo) => todo.id !== action.id);
+  } else if (action.type === "TOGGLE_TODO") {
+    const index = todos.findIndex((todo) => todo.id === action.id);
 
-        if (index !== -1) {
-            const todo = todos[index];
+    if (index !== -1) {
+      const todo = todos[index];
 
-            const newState = [...todos];
-            newState[index] = {
-                ...todo,
-                completed: !todo.completed,
-            };
+      const newState = [...todos];
+      newState[index] = {
+        ...todo,
+        completed: !todo.completed,
+      };
 
-            return newState;
-        }
+      return newState;
     }
+  }
 
-     // return exisiting state if nothing changed
-    return todos;
+  // return exisiting state if nothing changed
+  return todos;
 }
 ```
 
 So far, this is what our code looks like:
 
 ```js
-// State section
 function todoReducer(todos, action) {
-    if (action.type === 'ADD_TODO') {
-        return [...todos, action.todo];
-    } else if (action.type === 'DELETE_TODO') {
-        return todos.filter((todo) => todo.id !== action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        const index = todos.findIndex((todo) => todo.id === action.id);
+  if (action.type === "ADD_TODO") {
+    return [...todos, action.todo];
+  } else if (action.type === "DELETE_TODO") {
+    return todos.filter((todo) => todo.id !== action.id);
+  } else if (action.type === "TOGGLE_TODO") {
+    const index = todos.findIndex((todo) => todo.id === action.id);
 
-        if (index !== -1) {
-            const todo = todos[index];
-
-            const newState = [...todos];
-            newState[index] = {
-                ...todo,
-                completed: !todo.completed,
-            };
-
-            return newState;
-        }
+    if (index !== -1) {
+      const todo = todos[index];
+      const newState = [...todos];
+      newState[index] = {
+        ...todo,
+        completed: !todo.completed,
+      };
+      return newState;
     }
+  }
 
-    return todos;
+  return todos;
 }
 
 function createStore() {
-    let state = {
-        todos: [],
-        books: []
-    };
+  let state = {
+    todos: [],
+    books: [],
+  };
 
-    const dispatch = (action) => {
-        state.todos = todoReducer(state.todos, action);
-    };
+  const dispatch = (action) => {
+    state.todos = todoReducer(state.todos, action);
+  };
 
-    return {
-        dispatch
-    };
+  return {
+    dispatch,
+  };
 }
 
 const store = createStore();
 
 // UI section
-window.addEventListener('load', () => {
-    const todoForm = document.getElementById('add-todo');
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
 
-    todoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const todoInput = todoForm.elements.todo;
-        const text = todoInput.value;
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
 
-        const action = {
-            type: 'ADD_TODO',
-            todo,
-        };
-        store.dispatch(action);
-    });
+    const action = {
+      type: "ADD_TODO",
+      todo,
+    };
+    store.dispatch(action);
+  });
 });
 ```
