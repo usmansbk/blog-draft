@@ -25,7 +25,6 @@
       <ul id="books"></ul>
     </section>
     <script>
-      // State section
       function todoReducer(todos, action) {
         if (action.type === "ADD_TODO") {
           return [...todos, action.todo];
@@ -36,13 +35,11 @@
 
           if (index !== -1) {
             const todo = todos[index];
-
             const newState = [...todos];
             newState[index] = {
               ...todo,
               completed: !todo.completed,
             };
-
             return newState;
           }
         }
@@ -56,12 +53,15 @@
           books: [],
         };
 
+        const getState = () => state;
+
         const dispatch = (action) => {
           state.todos = todoReducer(state.todos, action);
         };
 
         return {
           dispatch,
+          getState,
         };
       }
 
@@ -86,6 +86,7 @@
             todo,
           };
           store.dispatch(action);
+          console.log(store.getState());
         });
       });
     </script>

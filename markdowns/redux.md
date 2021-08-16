@@ -615,3 +615,56 @@ window.addEventListener("load", () => {
   });
 });
 ```
+
+Currently, the store only allows us to update the state using the dispatch method.
+
+In order to display the items on the screen, we need a way to get the state from the store.
+
+Now, we need to provide a method to get access to the state.
+
+```js
+function createStore() {
+  let state = {
+    todos: [],
+    books: [],
+  };
+
+  const getState = () => state;
+
+  const dispatch = (action) => {
+    state.todos = todoReducer(state.todos, action);
+  };
+
+  return {
+    dispatch,
+    getState,
+  };
+}
+```
+
+Now, we can use our `getState` method to log our state whenever we add a Todo item.
+
+```js
+// UI section
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
+
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+
+    const action = {
+      type: "ADD_TODO",
+      todo,
+    };
+    store.dispatch(action);
+    console.log(store.getState());
+  });
+});
+```
