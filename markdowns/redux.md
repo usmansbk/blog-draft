@@ -525,7 +525,7 @@ By definition, pure functions:
 
 Our reducer is not pure because it modifies the state each time it is called. We need our application to be as predictable as possible.
 
-Let us go ahead and convert our reducer into a pure function by returning a new state each time an action is performed.
+Let's go ahead and convert our reducer into a pure function by returning a new state each time an action is performed.
 
 ```js
 function todoReducer(todos, action) {
