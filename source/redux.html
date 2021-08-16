@@ -68,6 +68,25 @@
       const store = createStore();
 
       // UI section
+      function renderTodos(todos) {
+        const ul = document.getElementById("todos");
+
+        ul.innerHTML = ""; // Remove previous state items
+
+        // Add new state items
+        todos.forEach((todo) => {
+          const li = document.createElement("li");
+
+          const removeButton = document.createElement("button");
+          removeButton.innerText = 'Remove';
+
+          li.appendChild(document.createTextNode(todo.text));
+          li.appendChild(removeButton);
+
+          ul.appendChild(li);
+        });
+      }
+
       window.addEventListener("load", () => {
         const todoForm = document.getElementById("add-todo");
 
@@ -86,7 +105,8 @@
             todo,
           };
           store.dispatch(action);
-          console.log(store.getState());
+          console.log(store.getState().todos);
+          renderTodos(store.getState().todos);
         });
       });
     </script>

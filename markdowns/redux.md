@@ -674,3 +674,49 @@ Try adding a to-do item, and you'll see it being logged in the console.
 ![getState](./imgs/get-state.png)
 
 ## Updating UI
+
+Now that we've provided a way to get the state, let's create a function that will add the items to the DOM.
+
+```js
+// UI section
+function renderTodos(todos) {
+  const ul = document.getElementById("todos");
+
+  ul.innerHTML = ""; // Remove previous state items
+
+  // Add new state items
+  todos.forEach((todo) => {
+    const li = document.createElement("li");
+
+    const removeButton = document.createElement("button");
+    removeButton.innerText = "Remove";
+
+    li.appendChild(document.createTextNode(todo.text));
+    li.appendChild(removeButton);
+
+    ul.appendChild(li);
+  });
+}
+
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
+
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+
+    const action = {
+      type: "ADD_TODO",
+      todo,
+    };
+    store.dispatch(action);
+    renderTodos(store.getState());
+  });
+});
+```
