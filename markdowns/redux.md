@@ -154,7 +154,6 @@ todoForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const todoInput = todoForm.elements.todo;
     const text = todoInput.value;
-
     const todo = {
         id: Date.now(),
         text,
@@ -207,6 +206,11 @@ window.addEventListener('load', () => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
         const text = todoInput.value;
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
     });
 });
 ```
@@ -231,12 +235,7 @@ function createStore() {
         books: []
     };
 
-    const addTodo = (text) => {
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
+    const addTodo = (todo) => {
         state.todos.push(todo);
     };
 
@@ -268,7 +267,12 @@ window.addEventListener('load', () => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
         const text = todoInput.value;
-        store.addTodo(text);
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
+        store.addTodo(todo);
     });
 });
 ```
@@ -289,12 +293,7 @@ function createStore() {
         books: []
     };
 
-    const addTodo = (text) => {
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
+    const addTodo = (todo) => {
         state.todos.push(todo);
     };
 
@@ -312,7 +311,7 @@ function createStore() {
     const dispatch = (action) => {
         // call the right function to handle action
         if (action.type === 'ADD_TODO') {
-            addTodo(action.text);
+            addTodo(action.todo);
         } else if (action.type === 'DELETE_TODO') {
             deleteTodo(action.id);
         } else if (action.type === 'TOGGLE_TODO') {
@@ -334,9 +333,16 @@ window.addEventListener('load', () => {
     todoForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const todoInput = todoForm.elements.todo;
+        const text = todoInput.value;
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
+
         const action = {
             type: 'ADD_TODO',
-            text: todoInput.value
+            todo,
         };
         store.dispatch(action);
     });
@@ -356,12 +362,7 @@ Lets start by abstracting the Todo actions logic from the `createStore` function
 ```js
 // State section
 function todoReducer(state, action) {
-    const addTodo = (text) => {
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
+    const addTodo = (todo) => {
         state.todos.push(todo);
     };
 
@@ -377,7 +378,7 @@ function todoReducer(state, action) {
     };
 
     if (action.type === 'ADD_TODO') {
-        addTodo(action.text);
+        addTodo(action.todo);
     } else if (action.type === 'DELETE_TODO') {
         deleteTodo(action.id);
     } else if (action.type === 'TOGGLE_TODO') {
@@ -409,13 +410,7 @@ Let's refactor our function to keep it short.
 ```js
 function todoReducer(state, action) {
     if (action.type === 'ADD_TODO') {
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
-
-        state.todos.push(todo);
+        state.todos.push(action.todo);
     } else if (action.type === 'DELETE_TODO') {
         state.todos = state.todos.filter((todo) => todo.id !== action.id);
     } else if (action.type === 'TOGGLE_TODO') {
@@ -444,13 +439,7 @@ We can prevent this by passing only the todos state as an argument to the `todoR
 ```js
 function todoReducer(todos, action) {
     if (action.type === 'ADD_TODO') {
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
-
-        todos.push(todo);
+        todos.push(action.todo);
     } else if (action.type === 'DELETE_TODO') {
         todos.filter((todo) => todo.id !== action.id);
     } else if (action.type === 'TOGGLE_TODO') {
@@ -465,5 +454,42 @@ function todoReducer(todos, action) {
 const dispatch = (action) => {
     // We pass only the todos state 
     todoReducer(state.todos, action);
+};
+```
+
+We've made our state tree and reducer loosely coupled. But we introduced another problem. Let's take a look our `DELETE_TODO` action.
+
+```js
+todos.filter((todo) => todo.id !== action.id);
+```
+
+While the `ADD_TODO` and `TOGGLE_TODO` actions directly update the `todos` array, the `DELETE_TODO` action creates a new list using the array filter method. This prevents our state from being modified.
+
+In software engineering, we say the `ADD_TODO` and `TOGGLE_TODO` actions are mutating the `todos` state.
+
+A naive way of fixing this would be to return the updated state and assign it to the state tree `todos` property in the `dispatch` method.
+
+```js
+function todoReducer(todos, action) {
+    if (action.type === 'ADD_TODO') {
+        todos.push(action.todo);
+
+        return todos;
+    } else if (action.type === 'DELETE_TODO') {
+        return todos.filter((todo) => todo.id !== action.id);
+    } else if (action.type === 'TOGGLE_TODO') {
+        const todo = todos.find((todo) => todo.id === action.id);
+        if (todo) {
+            todo.completed = !todo.completed
+        }
+
+        return todos;
+    }
+}
+
+// ...Inside the createStore function
+const dispatch = (action) => {
+    // We set todos state to updated state
+    state.todos = todoReducer(state.todos, action);
 };
 ```
