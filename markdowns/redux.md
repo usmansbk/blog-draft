@@ -481,4 +481,4 @@ deleteTodo(state.todos, 2);
 console.log(state.todos);
 ```
 
-[Console](./imgs/redux-state-test.png)
+![Console](./imgs/redux-state-test.png)
