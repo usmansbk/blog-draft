@@ -455,4 +455,30 @@ const dispatch = (action) => {
 };
 ```
 
-This reduces our chances of introducing the previous bug by introducing a bug in the process. ��
+Now, take a look at the `deleteTodo` function again. Will the state be updated when we delete an item?
+
+```js
+// ...Inside the todoReducer function
+const deleteTodo = (id) => {
+    todos = todos.filter((todo) => todo.id !== id);
+};
+```
+
+You can test this by running the following code in your console:
+
+```js
+// Test
+let state = {
+    todos: [1, 2, 3, 4]
+};
+
+const deleteTodo = (todos, id) => {
+    todos = todos.filter((todo) => todo.id !== id);
+};
+
+deleteTodo(state.todos, 2);
+
+console.log(state.todos);
+```
+
+[Console](./imgs/redux-state-test.png)
