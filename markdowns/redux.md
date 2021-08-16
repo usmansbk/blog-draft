@@ -6,13 +6,13 @@ tags: Redux, Design Patterns
 //cover_image: https://direct_url_to_image.jpg
 ---
 
-Like all well designed libraries and frameworks, Redux too is a combination of design patterns (Observer & Command Patterns) and software design principles.
+In this tutorial, we're going to learn Redux by building a simple redux clone to manage the state of our list application.
 
-By building our own state management from scratch following these principles and design patterns will help us in understanding redux.
+The objective is to understand core Redux, hence we'll be using only HTML and vanilla JavaScript (No React).
 
-For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), where i try to give a good mental model of the pattern.
+Like all well-designed libraries and frameworks, Redux too makes use of design pattern (Observer Pattern) and follows the software design principles.
 
-In this tutorial, we're going to learn redux by building a simple redux clone.
+For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), where I try to give a good mental model of the pattern.
 
 ### Requirements
 
