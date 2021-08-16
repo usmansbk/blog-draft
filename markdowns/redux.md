@@ -283,7 +283,7 @@ Invoking many store methods in our UI code increases the dependency between the 
 
 ## Actions
 
-Instead of calling different methods for different actions. We could invoke a single method, passing it a request object containing the type of action we would like to perform and the required data.
+Instead of calling different methods for different actions. We could create a single public method that takes an object as argument, this object will contain the type of action we would like to perform and any required data. The function will delegate our request to all action methods that can handle it.
 
 ```js
 // State section
@@ -457,17 +457,15 @@ const dispatch = (action) => {
 };
 ```
 
-We've made our state tree and reducer loosely coupled. But we introduced another problem. Let's take a look our `DELETE_TODO` action.
+We've made our state tree and reducer loosely coupled. But we introduced another problem in the process. Let's take a look our `DELETE_TODO` action.
 
 ```js
 todos.filter((todo) => todo.id !== action.id);
 ```
 
-While the `ADD_TODO` and `TOGGLE_TODO` actions directly update the `todos` array, the `DELETE_TODO` action creates a new list using the array filter method. This prevents our state from being modified.
+Unlike the array object `push` method, the `filter` method doesn't modify an array. It returns a new array of items that meet a certain criteria. This prevents our state from being updated.
 
-In software engineering, we say the `ADD_TODO` and `TOGGLE_TODO` actions are mutating the `todos` state.
-
-A naive way of fixing this would be to return the updated state and assign it to the state tree `todos` property in the `dispatch` method.
+A naive way of fixing this would be to return the modified or new state whenever an action is performed and assign it to the `todos` state.
 
 ```js
 function todoReducer(todos, action) {
@@ -489,7 +487,9 @@ function todoReducer(todos, action) {
 
 // ...Inside the createStore function
 const dispatch = (action) => {
-    // We set todos state to updated state
+    // We set todos state to the updated state
     state.todos = todoReducer(state.todos, action);
 };
 ```
+
+While this may work, directly modifying the existing state comes with it's own problems.
