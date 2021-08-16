@@ -283,7 +283,7 @@ Invoking many store methods in our UI code increases the dependency between the 
 
 ## Actions
 
-Instead of calling different methods for different actions. We could create a single public method that takes an object as argument, this object will contain the type of action we would like to perform and any required data. The function will delegate our request to all action methods that can handle it.
+Instead of calling different methods for different actions, we can create a single public method that takes an object as an argument. The object will contain the type of action we would like to perform and any required data. The function will then delegate our request to the right handlers.
 
 ```js
 // State section
@@ -492,4 +492,4 @@ const dispatch = (action) => {
 };
 ```
 
-While this may work, directly modifying the existing state comes with it's own problems.
+While this may work, directly modifying the existing state comes with its own problems.
