@@ -404,7 +404,7 @@ function createStore() {
 
 Also, notice how our arrow functions are so short that we could move their bodies to their respective `if` blocks.
 
-Let's refactor our function to keep it simple.
+Let's refactor our function to keep it short.
 
 ```js
 function todoReducer(state, action) {
@@ -439,7 +439,7 @@ if (action.type === 'DELETE_TODO') {
 }
 ```
 
-We can prevent this by passing only the todos state as an argument to the `todoReducer` function.
+We can prevent this by passing only the todos state as an argument to the `todoReducer` function. Forcing it to be responsible for only it's state.
 
 ```js
 function todoReducer(todos, action) {
