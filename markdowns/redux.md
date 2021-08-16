@@ -8,16 +8,11 @@ tags: Redux, Design Patterns
 
 When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it is designed.
 
-Like all well designed libraries and frameworks, Redux too is an implementation of design patterns.
+Like all well designed libraries and frameworks, Redux makes use of design patterns (Observer Pattern) and good software design principles.
 
-- Observer Pattern
-- Command Pattern
+For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), where i try to give a good mental model of the pattern.
 
-Design Patterns are shared vocabulary. Understanding these design patterns will give you a good mental model of Redux. Don't worry if you don't know these patterns yet, we'll be learning them in this tutorial.
-
-For a gentle intro to the Observer Pattern, check out my previous post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7). It'll help give you a good mental model of the pattern.
-
-In this tutorial, we're going to learn how redux works by building a simple list application.
+In this tutorial, we're going to learn how redux fundamentals by building a simple redux clone.
 
 ### Requirements
 
