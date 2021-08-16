@@ -347,7 +347,7 @@ An action encapsulates a request to do something (like add or delete todo) on th
 
 This only solves half of our problem. Notice that our `createStore` function will keep growing longer the more methods we add.
 
-We can solve this using another design principle ― Separation of concerns. By abstracting the todos state logic, we keep our `createStore` function simple and short, making it maintainable.
+We can solve this by following another design principle ― Separation of concerns. By abstracting the todos state logic, we keep our `createStore` function simple and short, making it maintainable.
 
 ## Updating the state (Reducer approach)
 
