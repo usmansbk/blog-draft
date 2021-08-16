@@ -355,7 +355,7 @@ Lets start by abstracting the Todo actions logic from the `createStore` function
 
 ```js
 // State section
-function todoReducer(state, logic) {
+function todoReducer(state, action) {
     const addTodo = (text) => {
         const todo = {
             id: Date.now(),
@@ -407,7 +407,7 @@ Also, notice how our arrow functions are so short that we could move their bodie
 Let's refactor our function to keep it simple.
 
 ```js
-function todoReducer(state, logic) {
+function todoReducer(state, action) {
     if (action.type === 'ADD_TODO') {
         const todo = {
             id: Date.now(),
@@ -417,9 +417,9 @@ function todoReducer(state, logic) {
 
         state.todos.push(todo);
     } else if (action.type === 'DELETE_TODO') {
-        state.todos = state.todos.filter((todo) => todo.id !== id);
+        state.todos = state.todos.filter((todo) => todo.id !== action.id);
     } else if (action.type === 'TOGGLE_TODO') {
-        const todo = state.todos.find((todo) => todo.id === id);
+        const todo = state.todos.find((todo) => todo.id === action.id);
         if (todo) {
             todo.completed = !todo.completed
         }
@@ -442,7 +442,7 @@ if (action.type === 'DELETE_TODO') {
 We can prevent this by passing only the todos state as an argument to the `todoReducer` function.
 
 ```js
-function todoReducer(todos, logic) {
+function todoReducer(todos, action) {
     if (action.type === 'ADD_TODO') {
         const todo = {
             id: Date.now(),
@@ -452,9 +452,9 @@ function todoReducer(todos, logic) {
 
         todos.push(todo);
     } else if (action.type === 'DELETE_TODO') {
-        todos = todos.filter((todo) => todo.id !== id);
+        todos = todos.filter((todo) => todo.id !== action.id);
     } else if (action.type === 'TOGGLE_TODO') {
-        const todo = todos.find((todo) => todo.id === id);
+        const todo = todos.find((todo) => todo.id === action.id);
         if (todo) {
             todo.completed = !todo.completed
         }
