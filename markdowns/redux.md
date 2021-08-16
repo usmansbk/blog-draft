@@ -347,4 +347,57 @@ An action encapsulates a request to do something (like add or delete todo) on th
 
 This only solves half of our problem. Notice that our `createStore` function will keep growing longer the more methods we add.
 
-We can solve this using another design principle, the Separation of concerns. By abstracting the todos state logic, we keep our `createStore` function simple and short. Making it maintainable.
+We can solve this using another design principle ― Separation of concerns. By abstracting the todos state logic, we keep our `createStore` function simple and short, making it maintainable.
+
+## Updating the state (Reducer approach)
+
+Lets move the todos logic outside the store function.
+
+```js
+// State section
+function handleTodos(todos, logic) {
+    const addTodo = (text) => {
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
+        todos.push(todo);
+    };
+
+    const deleteTodo = (id) => {
+        todos = todos.filter((todo) => todo.id !== id);
+    };
+
+    const toggleTodo = (id) => {
+        const todo = todos.find((todo) => todo.id === id);
+        if (todo) {
+            todo.completed = !todo.completed
+        }
+    };
+
+    if (action.type === 'ADD_TODO') {
+        addTodo(action.text);
+    } else if (action.type === 'DELETE_TODO') {
+        deleteTodo(action.id);
+    } else if (action.type === 'TOGGLE_TODO') {
+        toggleTodo(action.id);
+    }
+}
+
+function createStore() {
+    let state = {
+        todos: [],
+        books: []
+    };
+
+    const dispatch = (action) => {
+        // We now delegate action to the function
+        handleTodos(state.todos, action);
+    };
+
+    return {
+        dispatch
+    };
+}
+```
