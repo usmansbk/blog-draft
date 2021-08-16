@@ -340,3 +340,7 @@ window.addEventListener('load', () => {
 ```
 
 An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using action. So, you see, the view and state are loosely coupled!
+
+Now that we can add items to our state, it's time to display them on screen.
+
+## Subscribe
