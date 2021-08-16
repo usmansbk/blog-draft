@@ -402,6 +402,31 @@ function createStore() {
 }
 ```
 
+Also, notice how the arrow functions and action types have the same names. This is a form of repetition, and we should always try to avoid that.
+
+Let's refactor our function to keep it dry.
+
+```js
+function todoReducer(todos, logic) {
+    if (action.type === 'ADD_TODO') {
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
+
+        todos.push(todo);
+    } else if (action.type === 'DELETE_TODO') {
+        todos = todos.filter((todo) => todo.id !== id);
+    } else if (action.type === 'TOGGLE_TODO') {
+        const todo = todos.find((todo) => todo.id === id);
+        if (todo) {
+            todo.completed = !todo.completed
+        }
+    }
+}
+```
+
 We've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
 
 Our `todoReducer` knows way too much about our state ― Hello, Tight coupling. This makes it easy to introduce bugs like this::
@@ -418,32 +443,21 @@ We can prevent this by passing only the todos state as an argument to the `todoR
 
 ```js
 function todoReducer(todos, logic) {
-    const addTodo = (text) => {
+    if (action.type === 'ADD_TODO') {
         const todo = {
             id: Date.now(),
             text,
             completed: false
         };
+
         todos.push(todo);
-    };
-
-    const deleteTodo = (id) => {
+    } else if (action.type === 'DELETE_TODO') {
         todos = todos.filter((todo) => todo.id !== id);
-    };
-
-    const toggleTodo = (id) => {
+    } else if (action.type === 'TOGGLE_TODO') {
         const todo = todos.find((todo) => todo.id === id);
         if (todo) {
             todo.completed = !todo.completed
         }
-    };
-
-    if (action.type === 'ADD_TODO') {
-        addTodo(action.text);
-    } else if (action.type === 'DELETE_TODO') {
-        deleteTodo(action.id);
-    } else if (action.type === 'TOGGLE_TODO') {
-        toggleTodo(action.id);
     }
 }
 
@@ -482,3 +496,5 @@ console.log(state.todos);
 ```
 
 ![Console](./imgs/redux-state-test.png)
+
+As you can see, nothing changed after calling the `deleteTodo` function.
