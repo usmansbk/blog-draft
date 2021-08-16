@@ -452,7 +452,7 @@ function todoReducer(todos, action) {
 
         todos.push(todo);
     } else if (action.type === 'DELETE_TODO') {
-        todos = todos.filter((todo) => todo.id !== action.id);
+        todos.filter((todo) => todo.id !== action.id);
     } else if (action.type === 'TOGGLE_TODO') {
         const todo = todos.find((todo) => todo.id === action.id);
         if (todo) {
@@ -460,7 +460,6 @@ function todoReducer(todos, action) {
         }
     }
 }
-
 
 // ...Inside the createStore function
 const dispatch = (action) => {
