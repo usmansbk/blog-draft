@@ -407,8 +407,9 @@ We've made our `createStore` function more maintainable by separating concerns, 
 Our `todoReducer` knows way too much about our state ― Hello, Tight coupling. This makes it easy to introduce bugs like this::
 
 ```js
-// Overwriting the books state instead of todos
+// Fire spitting bug
 const deleteTodo = (id) => {
+    // Overwriting the books state instead of todos
     state.books = state.todos.filter((todo) => todo.id !== id);
 };
 ```
