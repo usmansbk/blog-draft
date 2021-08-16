@@ -79,7 +79,7 @@ let counter = 0;
 
 This makes it difficult to understand. Is the `counter` variable part of the application state or not?
 
-A cleaner way of preventing this would be grouping our application state as a single unit. This makes it easier to keep track of.
+A cleaner way of preventing this would be grouping our application state as a single unit. This makes it easier to keep track of our state.
 
 ```js
 let state = {
