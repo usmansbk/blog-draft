@@ -1,85 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simply Redux</title>
-</head>
-<body>
+  </head>
+  <body>
     <section>
-        <h2>Todos</h2>
-        <form id="add-todo">
-            <input name="todo" required />
-            <button type="submit">Add To-Do</button>
-        </form>
-        <ul id="todos"></ul>
+      <h2>Todos</h2>
+      <form id="add-todo">
+        <input name="todo" required />
+        <button type="submit">Add To-Do</button>
+      </form>
+      <ul id="todos"></ul>
     </section>
 
     <section>
-        <h2>Books</h2>
-        <form id="add-book">
-            <input name="book" required />
-            <button type="submit">Add Book</button>
-        </form>
-        <ul id="books"></ul>
+      <h2>Books</h2>
+      <form id="add-book">
+        <input name="book" required />
+        <button type="submit">Add Book</button>
+      </form>
+      <ul id="books"></ul>
     </section>
     <script>
-        // State section
-        function createStore() {
-            let state = {
-                todos: [],
-                books: [],
+      // State section
+      function todoReducer(todos, action) {
+        if (action.type === "ADD_TODO") {
+          return [...todos, action.todo];
+        } else if (action.type === "DELETE_TODO") {
+          return todos.filter((todo) => todo.id !== action.id);
+        } else if (action.type === "TOGGLE_TODO") {
+          const index = todos.findIndex((todo) => todo.id === action.id);
+
+          if (index !== -1) {
+            const todo = todos[index];
+
+            const newState = [...todos];
+            newState[index] = {
+              ...todo,
+              completed: !todo.completed,
             };
 
-            const addTodo = (text) => {
-                const todo = {
-                    id: Date.now(),
-                    text,
-                    completed: false,
-                };
-                state.todos.push(todo);
-            };
-
-            const deleteTodo = (id) => {
-                state.todos = state.todos.filter((todo) => todo.id !== id);
-            };
-
-            const toggleTodo = (id) => {
-                const todo = state.todos.find((todo) => todo.id === id);
-                if (todo) {
-                    todo.completed = !todo.completed
-                }
-            };
-
-            const dispatch = (action) => {
-                // call the right function to handle action
-                if (action.type === 'add-todo') {
-                    addTodo(action.text);
-                }
-            };
-
-            return {
-                dispatch
-            };
+            return newState;
+          }
         }
 
-        const store = createStore();
+        return todos;
+      }
 
-        // UI section
-        window.addEventListener('load', () => {
-            const todoForm = document.getElementById('add-todo');
+      function createStore() {
+        let state = {
+          todos: [],
+          books: [],
+        };
 
-            todoForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const todoInput = todoForm.elements.todo;
-                const action = {
-                    type: 'add-todo',
-                    text: todoInput.value,
-                };
-                store.dispatch(action);
-            });
+        const dispatch = (action) => {
+          state.todos = todoReducer(state.todos, action);
+        };
+
+        return {
+          dispatch,
+        };
+      }
+
+      const store = createStore();
+
+      // UI section
+      window.addEventListener("load", () => {
+        const todoForm = document.getElementById("add-todo");
+
+        todoForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const todoInput = todoForm.elements.todo;
+          const text = todoInput.value;
+          const todo = {
+            id: Date.now(),
+            text,
+            completed: false,
+          };
+
+          const action = {
+            type: "ADD_TODO",
+            todo,
+          };
+          store.dispatch(action);
         });
+      });
     </script>
-</body>
+  </body>
 </html>

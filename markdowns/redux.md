@@ -6,29 +6,6 @@ tags: Redux, Design Patterns
 //cover_image: https://direct_url_to_image.jpg
 ---
 
-<!-- Redux is a library for managing global application state.
-Redux is typically used with React
-
-Redux uses a "one-way data flow" app structure
-
-Command Pattern allows you to decouple the requester of an action from the object that actually performs the action.
-
-The client is responsible for creating the command object. The command object consist of a set of actions on a reciever.
-
-The command object encapsulates the actions and can be called to invoke the actions on the Receiver.
-
-The command pattern encapsulates a request as an object, thereby letting you parameterize other other objects with different requests.
-
-The command pattern aims to encapsulate method invocation, requests or operations into a single object and gives us the ability to both parameterize and pass method calls around that can be executed at our discretion.
-
-Meta command pattern allows you to create macros of commands so that you can execute multiple commands at once.
-
-A null object is useful when you don't have a meaningful object to return, and yet you want to remove the responsibility for handling null from the client.
-Smart command objects implement the logic needed to carry out a request.
-When you use the Command Pattern, you end up with a log of small classes.
-
-Actions are request objects to a reciever/command -->
-
 When you see the word Redux, the next thing that follows is probably React. But you don't need to know React in order to learn Redux. You can use Redux with any UI including basic HTML. Most people find Redux difficult because they don't understand what it's trying to solve, and how it is designed.
 
 Like all well designed libraries and frameworks, Redux too is an implementation of design patterns.
@@ -357,7 +334,11 @@ We can solve this by following another design principle ― Separation of concer
 
 ## Updating the state (Reducer approach)
 
-Lets start by abstracting the Todo actions logic from the `createStore` function to a new function named `todoReducer`. This will literally reduce the size of our `createStore` function.
+Let's start by abstracting the Todo actions logic from the `createStore` function to a new function.
+
+We call this new function a **Reducer** because it takes our state and action and reduces it to a new state, similar to how Array `reduce` method works.
+
+This function will literally reduce the size of our `createStore` function.
 
 ```js
 // State section
@@ -424,7 +405,7 @@ function todoReducer(state, action) {
 
 Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
 
-Our `todoReducer` knows way too much about our state ― _Hello, Tight coupling_. This makes it easy to introduce bugs like this::
+Our `todoReducer` knows way too much about our state ― _Hello, Tight coupling_. This makes it easier to introduce bugs like this::
 
 ```js
 // Fire spitting bug
@@ -492,4 +473,170 @@ const dispatch = (action) => {
 };
 ```
 
-While this may work, directly modifying the existing state comes with a nonobvious problem.
+But directly modifying the existing state comes with a nonobvious problem. It makes it difficult to predict our state. Let's understand what this means with a few examples:
+
+```js
+function square(num) {
+    return num * num;
+}
+
+const sameNumber = 2;
+console.log(square(sameNumber)); // => 4
+console.log(square(sameNumber)); // => 4
+console.log(square(sameNumber)); // => 4
+```
+
+Calling the `square` function with the same argument will always return the same result. This makes the function predictable because we know the result will never change given the same argument is passed into it.
+
+Let's look at a more complex example.
+
+```js
+// This function will return an array of the square of numbers
+function squares(numbers) {
+    let result = [];
+
+    for (let i = 0; i < numbers.length; i++) {
+        const num = numbers[i];
+        result[i] = num * num;
+    } 
+
+    return result;
+}
+
+const arrOfNumbers = [1, 2, 3];
+console.log(squares(arrOfNumbers)); // => [1, 4, 9] 
+console.log(squares(arrOfNumbers)); // => [1, 4, 9] 
+console.log(squares(arrOfNumbers)); // => [1, 4, 9] 
+```
+
+The `squares` function will also return the same result if the same arguments are passed to it.
+
+Now, let's look at a different implementation of the `squares` function.
+
+```js
+// This function will return an array of the square of numbers
+function squares2(numbers) {
+    for (let i = 0; i < numbers.length; i++) {
+        const num = numbers[i];
+        numbers[i] = num * num;
+    } 
+
+    return numbers;
+}
+
+const arrOfNumbers = [1, 2, 3];
+console.log(squares2(arrOfNumbers)); // => [ 1, 4, 9]
+console.log(squares2(arrOfNumbers)); // => [ 1, 16, 81] 
+console.log(squares2(arrOfNumbers)); // => [ 1, 256, 6561]
+```
+
+This version returns a different result every time we call it with the same argument.
+
+Can you quickly predict the result after calling the function with the same argument a thousand times?
+
+In functional programming, `square` and `squares` are called **pure functions**.
+
+### Pure Functions
+
+- Returns the same result if the same arguments are passed
+- Depend only on the arguments passed into them
+- Do not produce any side effects, such as mutating external data or API requests
+
+Our reducer function is not pure because it modifies the state each time it is called. We need our application to be as predictable as possible.
+
+Let us go ahead and convert our reducer to a pure function by returning a new state each time it is called instead of modifying the existing one.
+
+```js
+function todoReducer(todos, action) {
+    if (action.type === 'ADD_TODO') {
+        return [...todos, action.todo];
+    } else if (action.type === 'DELETE_TODO') {
+        return todos.filter((todo) => todo.id !== action.id);
+    } else if (action.type === 'TOGGLE_TODO') {
+        const index = todos.findIndex((todo) => todo.id === action.id);
+
+        if (index !== -1) {
+            const todo = todos[index];
+
+            const newState = [...todos];
+            newState[index] = {
+                ...todo,
+                completed: !todo.completed,
+            };
+
+            return newState;
+        }
+    }
+
+     // return exisiting state if nothing changed
+    return todos;
+}
+```
+
+So far, this is what our code looks like:
+
+```js
+// State section
+function todoReducer(todos, action) {
+    if (action.type === 'ADD_TODO') {
+        return [...todos, action.todo];
+    } else if (action.type === 'DELETE_TODO') {
+        return todos.filter((todo) => todo.id !== action.id);
+    } else if (action.type === 'TOGGLE_TODO') {
+        const index = todos.findIndex((todo) => todo.id === action.id);
+
+        if (index !== -1) {
+            const todo = todos[index];
+
+            const newState = [...todos];
+            newState[index] = {
+                ...todo,
+                completed: !todo.completed,
+            };
+
+            return newState;
+        }
+    }
+
+    return todos;
+}
+
+function createStore() {
+    let state = {
+        todos: [],
+        books: []
+    };
+
+    const dispatch = (action) => {
+        state.todos = todoReducer(state.todos, action);
+    };
+
+    return {
+        dispatch
+    };
+}
+
+const store = createStore();
+
+// UI section
+window.addEventListener('load', () => {
+    const todoForm = document.getElementById('add-todo');
+
+    todoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const todoInput = todoForm.elements.todo;
+        const text = todoInput.value;
+        const todo = {
+            id: Date.now(),
+            text,
+            completed: false
+        };
+
+        const action = {
+            type: 'ADD_TODO',
+            todo,
+        };
+        store.dispatch(action);
+    });
+});
+```
