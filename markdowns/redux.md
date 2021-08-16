@@ -492,4 +492,4 @@ const dispatch = (action) => {
 };
 ```
 
-While this may work, directly modifying the existing state comes with its own problems.
+While this may work, directly modifying the existing state comes with a nonobvious problem.
