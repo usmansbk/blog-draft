@@ -313,6 +313,10 @@ function createStore() {
         // call the right function to handle action
         if (action.type === 'ADD_TODO') {
             addTodo(action.text);
+        } else if (action.type === 'DELETE_TODO') {
+            deleteTodo(action.id);
+        } else if (action.type === 'TOGGLE_TODO') {
+            toggleTodo(action.id);
         }
     };
 
@@ -339,8 +343,8 @@ window.addEventListener('load', () => {
 });
 ```
 
-An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using action. So, you see, the view and state are loosely coupled!
+An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using action.
 
-Now that we can add items to our state, it's time to display them on screen.
+This only solves half of our problem. Notice that our `createStore` function will keep growing longer the more methods we add.
 
-## Subscribe
+We can solve this using another design principle, the Separation of concerns. By abstracting the todos state logic, we keep our `createStore` function simple and short. Making it maintainable.
