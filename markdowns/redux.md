@@ -164,7 +164,7 @@ todoForm.addEventListener('submit', (event) => {
 });
 ```
 
-This approach is bad because our `submit` handler knows too much about our state tree. Imagine we later decided to change our state tree to this:
+This approach is bad because our `submit` listener knows too much about our state tree. Imagine we later decided to change our state tree to this:
 
 ```js
 // state section 
