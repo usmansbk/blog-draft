@@ -672,3 +672,5 @@ window.addEventListener("load", () => {
 Try adding a to-do item, and you'll see it being logged in the console.
 
 ![getState](./imgs/get-state.png)
+
+## Updating UI
