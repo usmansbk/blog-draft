@@ -407,7 +407,7 @@ Also, notice how the arrow functions and action types have the same names. This 
 Let's refactor our function to keep it dry.
 
 ```js
-function todoReducer(todos, logic) {
+function todoReducer(state, logic) {
     if (action.type === 'ADD_TODO') {
         const todo = {
             id: Date.now(),
@@ -415,11 +415,11 @@ function todoReducer(todos, logic) {
             completed: false
         };
 
-        todos.push(todo);
+        state.todos.push(todo);
     } else if (action.type === 'DELETE_TODO') {
-        todos = todos.filter((todo) => todo.id !== id);
+        state.todos = state.todos.filter((todo) => todo.id !== id);
     } else if (action.type === 'TOGGLE_TODO') {
-        const todo = todos.find((todo) => todo.id === id);
+        const todo = state.todos.find((todo) => todo.id === id);
         if (todo) {
             todo.completed = !todo.completed
         }
@@ -433,10 +433,10 @@ Our `todoReducer` knows way too much about our state ― Hello, Tight coupling. 
 
 ```js
 // Fire spitting bug
-const deleteTodo = (id) => {
-    // Overwriting the books state instead of todos
+if (action.type === 'DELETE_TODO') {
+    // overwriting the books state instead of todos
     state.books = state.todos.filter((todo) => todo.id !== id);
-};
+}
 ```
 
 We can prevent this by passing only the todos state as an argument to the `todoReducer` function.
@@ -464,7 +464,7 @@ function todoReducer(todos, logic) {
 
 // ...Inside the createStore function
 const dispatch = (action) => {
-    // We now delegate action to the function
+    // We pass only the todos state 
     todoReducer(state.todos, action);
 };
 ```
