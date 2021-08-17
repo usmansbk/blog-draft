@@ -821,8 +821,8 @@ removeButton.addEventListener("click", () => {
 Notice these two lines of code:
 
 ```js
-  renderTodos(store.getState().todos);
-  console.log(store.getState());
+renderTodos(store.getState().todos);
+console.log(store.getState());
 ```
 
 That's exactly what we did after dispatching `ADD_TODO` action. What happens when we dispach a `TOGGLE_TODO` action or later dispatch book actions?
@@ -830,3 +830,9 @@ That's exactly what we did after dispatching `ADD_TODO` action. What happens whe
 We're basically repeating ourselves.
 
 This violates another principle ― Don't Repeat Yourself.
+
+We would like to render our todos and log our state any time our state changes.
+
+This is where the Observer pattern shines!
+
+## Updating UI (Observer Pattern)
