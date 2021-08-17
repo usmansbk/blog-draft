@@ -207,7 +207,7 @@ Now, we need away to update our state. Based on our application requirements, we
 - Delete a Todo item
 - Toggle completed Todo
 
-By following OOP practice, we can create methods to handle each action.
+Let's take the object-oriented programming approach and create a method for each associated action.
 
 ```js
 function createStore() {
