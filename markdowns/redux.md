@@ -62,7 +62,7 @@ The final app should look like this:
 
 ## State Tree
 
-Conceptually, there are two kinds of data in our application. Two arrays of todo item objects and books item objects. A naive way of storing our application data would be declaring them as variables.
+Conceptually, there are two kinds of data in our application: Todos item objects and Books item objects. A naive way of storing our application data would be declaring them as separate variables.
 
 ```js
 let todos = [];
@@ -133,7 +133,7 @@ todoForm.addEventListener("submit", (event) => {
 });
 ```
 
-This approach is bad because our `submit` listener knows too much about our state tree. Imagine we later decided to change our state tree to this:
+This approach is bad because our UI code knows too much about our state tree. Imagine we later decided to change our state tree to this:
 
 ```js
 let state = {
@@ -142,18 +142,19 @@ let state = {
 };
 ```
 
-This will break our UI because it depends on `state.todos` being an Array object. We can say our UI is tightly coupled to our state, and tight coupling leads to bad code.
+This will break our UI because it depends on `state.todos` being an array. We can say our UI is tightly coupled to our state, and tight coupling leads to bad code.
 
 One of the software design principles is striving for loosely coupled design between objects that interact. Two things are loosely coupled if they have very little knowledge of each other.
 
 ## Store
 
-We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy would be a TV. The electrical circuit is hidden inside the TV, and we only control it via public remote control. This is called Data Encapsulation.
+We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy would be a TV. The electrical circuit is hidden inside the TV, and we only control it via remote control (public method). This is called Data Encapsulation.
 
 This is achieved by closing the state tree in a function and returning an object with public methods to access the state. The returned object is called a **store**.
 
 ```js
 function createStore() {
+  // hidden inside this function
   let state = {
     todos: [],
     books: [],
@@ -183,17 +184,17 @@ window.addEventListener("load", () => {
 });
 ```
 
-Doing this will prevent our UI code from directly accessing our state tree. All interactions with the state will be done via the store object methods. Keeping the state and view code loosely coupled.
+Doing this will prevent our UI code from directly accessing our state tree, and all interactions with the state will be done via the store object methods. Keeping the state and view code loosely coupled.
 
 ### Updating the State (OOP Approach)
 
 Now, we need away to update our state. Based on our application requirements, we should be able to do the following:
 
 - Add a Todo item
-- Delete an Item
-- Toggle completed todo
+- Delete a Todo item
+- Toggle completed Todo
 
-By following good OOP practice, we can create methods to handle each action.
+By following OOP practice, we can create methods to handle each action.
 
 ```js
 function createStore() {
@@ -244,11 +245,15 @@ window.addEventListener("load", () => {
 
 From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new features (pun intended).
 
-Invoking many store methods in our UI code increases the dependency between the view and store. Remember, we should always strive for loose coupling.
+Invoking many store methods in our UI code increases the dependency between the UI and store. Remember, we should always strive for loose coupling.
 
 ## Actions
 
-Instead of calling different methods for different actions, we can create a single public method that takes an object as an argument. The object will contain the type of action we would like to perform and any required data. The function will then delegate our request to the right handlers.
+Instead of calling different methods for different actions, we can create a single public method that takes an object as an argument.
+
+This object will contain the type of action we would like to perform and any required data.
+
+The method will then delegate our request to the right action handlers.
 
 ```js
 function createStore() {
@@ -313,9 +318,9 @@ window.addEventListener("load", () => {
 
 An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using actions.
 
-This only solves half of our problem. Notice that our `createStore` function will keep growing longer the more methods we add.
+The next problem is, the more methods we add to our store function, the more it will grow. Making it harder to manage.
 
-We can solve this by following another design principle ― Separation of concerns. By abstracting the todo actions logic, we keep our `createStore` function simple and short, making it maintainable.
+We can solve this by following another design principle ― Separation of concerns. The job of figuring out the right action handler should be moved to a different function.
 
 ## Updating the state (Reducer approach)
 
@@ -362,11 +367,9 @@ function createStore() {
 }
 ```
 
-We call this new function a **Reducer** because it takes our state and action, and reduces it to a new state, similar to how Array `reduce` method works.
+We call this new function a **Reducer** because it takes our state and action, and reduces it to a new state, similar to how array `reduce` method works.
 
-Also, notice how our arrow functions are so short that we could move their bodies to their respective `if` blocks. We can improve on that.
-
-Let's refactor our function to keep it short.
+Also, since our arrow functions are short, we can move their bodies to their respective `if` blocks.
 
 ```js
 function todoReducer(state, action) {
@@ -450,7 +453,7 @@ const dispatch = (action) => {
 };
 ```
 
-But doing this introduces a nonobvious problem. It makes it difficult to predict our reducer function.
+But doing this makes the reducer function difficult to predict.
 
 Let's understand what this means with the help of a few examples:
 
