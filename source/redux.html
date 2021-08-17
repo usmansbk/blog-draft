@@ -10,7 +10,7 @@
     <section>
       <h2>Todos</h2>
       <form id="add-todo">
-        <input name="todo" required />
+        <input name="todo" placeholder="Description" required />
         <button type="submit">Add To-Do</button>
       </form>
       <ul id="todos"></ul>
@@ -19,7 +19,7 @@
     <section>
       <h2>Books</h2>
       <form id="add-book">
-        <input name="book" required />
+        <input name="book" placeholder="Title" required />
         <button type="submit">Add Book</button>
       </form>
       <ul id="books"></ul>
@@ -47,6 +47,16 @@
         return todos;
       }
 
+      function bookReducer(books, action) {
+        if (action.type === "ADD_BOOK") {
+          return [...books, action.book];
+        } else if (action.type === "DELETE_BOOK") {
+          return books.filter((book) => book.id !== action.id);
+        }
+
+        return books;
+      }
+
       function createStore() {
         let state = {
           todos: [],
@@ -58,7 +68,10 @@
         const getState = () => state;
 
         const dispatch = (action) => {
-          state.todos = todoReducer(state.todos, action);
+          state = {
+            todos: todoReducer(state.todos, action),
+            books: bookReducer(state.books, action),
+          };
 
           listeners.forEach((listener) => listener());
         };
@@ -100,15 +113,15 @@
 
           li.appendChild(text);
           li.appendChild(removeButton);
-          li.style.textDecoration = todo.completed ? 'line-through' : 'none';
-          li.addEventListener('click', () => {
+          li.style.textDecoration = todo.completed ? "line-through" : "none";
+          li.addEventListener("click", () => {
             const action = {
               type: "TOGGLE_TODO",
               id: todo.id,
             };
 
             store.dispatch(action);
-          })
+          });
 
           ul.appendChild(li);
         });
@@ -116,6 +129,26 @@
 
       window.addEventListener("load", () => {
         const todoForm = document.getElementById("add-todo");
+        const bookForm = document.getElementById("add-book");
+
+        bookForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const bookInput = bookForm.elements.book;
+          const title = bookInput.value;
+          const book = {
+            id: Date.now(),
+            title,
+          };
+
+          const action = {
+            type: "ADD_BOOK",
+            book,
+          };
+
+          store.dispatch(action);
+
+          bookForm.reset();
+        });
 
         todoForm.addEventListener("submit", (event) => {
           event.preventDefault();
@@ -134,12 +167,13 @@
           store.dispatch(action);
           todoForm.reset();
         });
+
         store.subscribe(() => {
           renderTodos(store.getState().todos);
         });
 
         store.subscribe(() => {
-          console.log(store.getState().todos);
+          console.log(store.getState());
         });
       });
     </script>

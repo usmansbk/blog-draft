@@ -959,7 +959,7 @@ window.addEventListener("load", () => {
   });
 
   store.subscribe(() => {
-    console.log(store.getState().todos);
+    console.log(store.getState());
   });
 });
 ```
@@ -1044,4 +1044,64 @@ const dispatch = (action) => {
 };
 ```
 
-Finally, we connect the books UI.
+Finally, we connect our books UI to the store.
+
+```js
+function renderBooks(books) {
+  const ul = document.getElementById("books");
+}
+
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
+  const bookForm = document.getElementById("add-book"); // get book form
+
+  // Add book form listener
+  bookForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const bookInput = bookForm.elements.book;
+    const title = bookInput.value;
+    const book = {
+      id: Date.now(),
+      title,
+    };
+
+    const action = {
+      type: "ADD_BOOK",
+      book,
+    };
+
+    store.dispatch(action);
+
+    bookForm.reset();
+  });
+
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+
+    const action = {
+      type: "ADD_TODO",
+      todo,
+    };
+    store.dispatch(action);
+
+    todoForm.reset();
+  });
+
+  store.subscribe(() => {
+    renderTodos(store.getState().todos);
+  });
+
+  store.subscribe(() => {
+    console.log(store.getState());
+  });
+});
+```
