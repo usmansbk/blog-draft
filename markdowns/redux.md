@@ -719,7 +719,6 @@ window.addEventListener("load", () => {
     console.log(store.getState());
 
     todoForm.reset();
-
   });
 });
 ```
@@ -1009,3 +1008,40 @@ function renderTodos(todos) {
   });
 }
 ```
+
+Currently, the app keeps track of only the todo items.
+
+Let's add the code to handle the Books state. The book section supports only two actions:
+
+- Add book item
+- Delete book item
+
+The first step is to create a reducer to handle book actions.
+
+```js
+function bookReducer(books, action) {
+  if (action.type === "ADD_BOOK") {
+    return [...books, action.book];
+  } else if (action.type === "DELETE_BOOK") {
+    return books.filter((book) => book.id !== action.id);
+  }
+
+  return books;
+}
+```
+
+Then, we add our book reducer to the `createStore` function to handle the books state.
+
+```js
+const dispatch = (action) => {
+  // state.todos = todoReducer(state.todos, action);
+  state = {
+    todos: todoReducer(state.todos, action),
+    books: bookReducer(state.books, action),
+  };
+
+  listeners.forEach((listener) => listener());
+};
+```
+
+Finally, we connect the books UI.
