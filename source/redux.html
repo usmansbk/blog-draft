@@ -78,7 +78,16 @@
           const li = document.createElement("li");
 
           const removeButton = document.createElement("button");
-          removeButton.innerText = 'Remove';
+          removeButton.innerText = "Remove";
+          removeButton.addEventListener("click", () => {
+            const action = {
+              type: "DELETE_TODO",
+              id: todo.id,
+            };
+
+            store.dispatch(action);
+            console.log(store.getState());
+          });
 
           li.appendChild(document.createTextNode(todo.text));
           li.appendChild(removeButton);

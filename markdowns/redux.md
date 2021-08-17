@@ -174,8 +174,7 @@ function createStore() {
   };
 
   // store object
-  return {
-  };
+  return {};
 }
 
 const store = createStore();
@@ -714,7 +713,7 @@ Try adding a to-do item, and you'll see it being logged in the console.
 
 ![getState](./imgs/get-state.png)
 
-## Updating UI
+## Updating UI (Naive approach)
 
 Now that we've provided a way to get the state, let's create a function that will add the items to the DOM.
 
@@ -756,8 +755,65 @@ window.addEventListener("load", () => {
       type: "ADD_TODO",
       todo,
     };
+
     store.dispatch(action);
-    renderTodos(store.getState());
+    renderTodos(store.getState().todos);
+    console.log(store.getState());
   });
+});
+```
+
+Next is to delete an item when the Remove button is clicked.
+
+We can do that by dispatching a `DELETE_TODO` action whenever a button is clicked.
+
+```js
+// UI section
+function renderTodos(todos) {
+  const ul = document.getElementById("todos");
+
+  ul.innerHTML = ""; // Remove previous state items from DOM
+
+  // Add new state items to DOM
+  todos.forEach((todo) => {
+    const li = document.createElement("li");
+
+    const removeButton = document.createElement("button");
+    removeButton.innerText = "Remove";
+
+    removeButton.addEventListener("click", () => {
+      const action = {
+        type: "DELETE_TODO",
+        id: todo.id,
+      };
+
+      store.dispatch(action);
+      console.log(store.getState());
+    });
+
+    li.appendChild(document.createTextNode(todo.text));
+    li.appendChild(removeButton);
+
+    ul.appendChild(li);
+  });
+}
+```
+
+Now try removing an item, and you'll see it not removed from the UI. But if you check the developer console, you'll see it has been removed from our state.
+
+This is because our UI no longer represents the new state of our application.
+
+A naive way of fixing this would be calling `renderTodos` with the new state after dispatching the `DELETE_ACTION`.
+
+```js
+removeButton.addEventListener("click", () => {
+  const action = {
+    type: "DELETE_TODO",
+    id: todo.id,
+  };
+
+  store.dispatch(action);
+  renderTodos(store.getState().todos);
+  console.log(store.getState());
 });
 ```
