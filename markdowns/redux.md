@@ -978,6 +978,8 @@ function renderTodos(todos) {
 
   todos.forEach((todo) => {
     const li = document.createElement("li");
+
+    // Add stying for completed todo
     li.style.textDecoration = todo.completed ? "line-through" : "none";
     li.addEventListener("click", () => {
       const action = {
