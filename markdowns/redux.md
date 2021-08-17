@@ -825,7 +825,7 @@ renderTodos(store.getState().todos);
 console.log(store.getState());
 ```
 
-That's exactly what we did after dispatching `ADD_TODO` action. What happens when we dispach a `TOGGLE_TODO` action or later dispatch book actions?
+That's exactly what we did after dispatching `ADD_TODO` action, and we'll have to do the same for `TOGGLE_TODO`.
 
 We're basically repeating ourselves.
 
@@ -836,3 +836,112 @@ We would like to render our todos and log our state any time our state changes.
 This is where the Observer pattern shines!
 
 ## Updating UI (Observer Pattern)
+
+In the Observer Pattern, there's a concept of subject and listeners. The listeners are dependent on the subject such that when the subject changes, the listeners get notified.
+
+Our state tree is the subject and our listeners are the code that use the state. Basically any code that call `store.getState()` should subscribe become a listener.
+
+```js
+// Our two potential listeners
+renderTodos(store.getState().todos);
+console.log(store.getState());
+```
+
+We need a way to provide a method to make our code subscribe to changes in the state.
+
+We can do that by adding a `subscribe` method to the store. This method will take a callback function as argument that will be called anytime the `dispatch` method is invoked.
+
+```js
+function createStore() {
+  let state = {
+    todos: [],
+    books: [],
+  };
+
+  // we keep track of listeners using an array
+  let listeners = [];
+
+  const getState = () => state;
+
+  const dispatch = (action) => {
+    state.todos = todoReducer(state.todos, action);
+
+    // we invoke all listeners to get notified
+    listeners.forEach((listener) => listener());
+  };
+
+  // listener argument is a callback function
+  const subscribe = (listener) => {
+    listeners.push(listener);
+  };
+
+  return {
+    dispatch,
+    getState,
+    subscribe,
+  };
+}
+```
+
+Now, we can DRY our UI code.
+
+```js
+// UI section
+function renderTodos(todos) {
+  const ul = document.getElementById("todos");
+
+  ul.innerHTML = ""; // Remove previous state items
+
+  // Add new state items
+  todos.forEach((todo) => {
+    const li = document.createElement("li");
+
+    const removeButton = document.createElement("button");
+    removeButton.innerText = "Remove";
+    removeButton.addEventListener("click", () => {
+      const action = {
+        type: "DELETE_TODO",
+        id: todo.id,
+      };
+
+      store.dispatch(action);
+    });
+
+    li.appendChild(document.createTextNode(todo.text));
+    li.appendChild(removeButton);
+
+    ul.appendChild(li);
+  });
+}
+
+window.addEventListener("load", () => {
+  const todoForm = document.getElementById("add-todo");
+
+  todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const todoInput = todoForm.elements.todo;
+    const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+
+    const action = {
+      type: "ADD_TODO",
+      todo,
+    };
+    store.dispatch(action);
+  });
+
+  // Subscribe to become listeners
+  store.subscribe(() => {
+    renderTodos(store.getState().todos);
+  });
+
+  store.subscribe(() => {
+    console.log(store.getState().todos);
+  });
+
+});
+```
