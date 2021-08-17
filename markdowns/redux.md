@@ -685,9 +685,9 @@ Now that we've provided a way to get the state, let's create a function that wil
 function renderTodos(todos) {
   const ul = document.getElementById("todos");
 
-  ul.innerHTML = ""; // Remove previous state items
+  ul.innerHTML = ""; // Remove previous state items from DOM
 
-  // Add new state items
+  // Add new state items to DOM
   todos.forEach((todo) => {
     const li = document.createElement("li");
 
