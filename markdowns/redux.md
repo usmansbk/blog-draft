@@ -352,11 +352,11 @@ window.addEventListener("load", () => {
 });
 ```
 
-An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the store using actions.
+An action encapsulates a request to do something (like add or delete todo) on the state tree. Our UI code doesn't have any idea what method is used behind the scenes, it just knows how to talk to the state using actions.
 
-The next problem is, the more methods we add to our store function, the more it will grow. Making it harder to manage.
+The next problem is, `createStore` grows larger as we add more action handlers. Making it harder to manage.
 
-We can solve this by following another design principle ― Separation of concerns. The idea is to move the job of delegating action handlers to a different function outside the store function.
+We can solve this by following another design principle ― Separation of concerns. The idea is to move the action handlers to a new function outside `createStore`.
 
 ## Updating the state (Reducer approach)
 
@@ -393,7 +393,7 @@ function createStore() {
   };
 
   const dispatch = (action) => {
-    // We now delegate action to the function
+    // We now delegate to the new function
     todoReducer(state, action);
   };
 
@@ -420,9 +420,9 @@ function todoReducer(state, action) {
 }
 ```
 
-Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
+Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced a potential source of bug.
 
-Our reducer knows too much about our state ― Tight coupling. This makes it easy to introduce bugs like this:
+Our reducer has access to the whole state tree. This makes it easy to introduce bugs like this:
 
 ```js
 // Fire spitting bug
@@ -432,7 +432,7 @@ if (action.type === "DELETE_TODO") {
 }
 ```
 
-We can prevent this by passing only the todos state as an argument to the reducer function.
+The `todoReducer` should only be reponsible for the `todos` state. We can achieve this by passing only the todos state as an argument to the function.
 
 ```js
 function todoReducer(todos, action) {
@@ -453,7 +453,7 @@ const dispatch = (action) => {
 };
 ```
 
-We've made our state tree and reducer loosely coupled. But we introduced another problem in the process. Let's take a look our `DELETE_TODO` action.
+By doing this, we've introduced another problem. Let's take a look at our `DELETE_TODO` action:
 
 ```js
 todos.filter((todo) => todo.id !== action.id);
