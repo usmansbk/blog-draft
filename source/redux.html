@@ -100,6 +100,15 @@
 
           li.appendChild(text);
           li.appendChild(removeButton);
+          li.style.textDecoration = todo.completed ? 'line-through' : 'none';
+          li.addEventListener('click', () => {
+            const action = {
+              type: "TOGGLE_TODO",
+              id: todo.id,
+            };
+
+            store.dispatch(action);
+          })
 
           ul.appendChild(li);
         });
@@ -123,6 +132,7 @@
             todo,
           };
           store.dispatch(action);
+          todoForm.reset();
         });
         store.subscribe(() => {
           renderTodos(store.getState().todos);

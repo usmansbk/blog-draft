@@ -117,6 +117,8 @@ window.addEventListener("load", () => {
       text,
       completed: false,
     };
+
+    todoForm.reset(); // clear the input field
   });
 });
 ```
@@ -141,6 +143,8 @@ todoForm.addEventListener("submit", (event) => {
     completed: false,
   };
   state.todos.push(todo);
+
+  todoForm.reset();
 });
 ```
 
@@ -192,6 +196,8 @@ window.addEventListener("load", () => {
       text,
       completed: false,
     };
+
+    todoForm.reset();
   });
 });
 ```
@@ -251,6 +257,8 @@ window.addEventListener("load", () => {
       completed: false,
     };
     store.addTodo(todo);
+
+    todoForm.reset();
   });
 });
 ```
@@ -347,6 +355,8 @@ window.addEventListener("load", () => {
     };
 
     store.dispatch(action);
+
+    todoForm.reset();
   });
 });
 ```
@@ -652,6 +662,8 @@ window.addEventListener("load", () => {
       todo,
     };
     store.dispatch(action);
+
+    todoForm.reset();
   });
 });
 ```
@@ -705,6 +717,9 @@ window.addEventListener("load", () => {
     };
     store.dispatch(action);
     console.log(store.getState());
+
+    todoForm.reset();
+
   });
 });
 ```
@@ -760,6 +775,8 @@ window.addEventListener("load", () => {
 
     renderTodos(store.getState().todos);
     console.log(store.getState());
+
+    todoForm.reset();
   });
 });
 ```
@@ -933,6 +950,8 @@ window.addEventListener("load", () => {
       todo,
     };
     store.dispatch(action);
+
+    todoForm.reset();
   });
 
   // Subscribe to become listeners
@@ -944,4 +963,47 @@ window.addEventListener("load", () => {
     console.log(store.getState().todos);
   });
 });
+```
+
+The final requirement for the Todos list is marking todo as completed.
+
+We can do that by dispatching a `TOGGLE_TODO` action any time an item is clicked.
+
+```js
+// UI section
+function renderTodos(todos) {
+  const ul = document.getElementById("todos");
+
+  ul.innerHTML = "";
+
+  todos.forEach((todo) => {
+    const li = document.createElement("li");
+    li.style.textDecoration = todo.completed ? "line-through" : "none";
+    li.addEventListener("click", () => {
+      const action = {
+        type: "TOGGLE_TODO",
+        id: todo.id,
+      };
+
+      store.dispatch(action);
+    });
+
+    const text = document.createTextNode(todo.text);
+    const removeButton = document.createElement("button");
+    removeButton.innerText = "Remove";
+    removeButton.addEventListener("click", () => {
+      const action = {
+        type: "DELETE_TODO",
+        id: todo.id,
+      };
+
+      store.dispatch(action);
+    });
+
+    li.appendChild(text);
+    li.appendChild(removeButton);
+
+    ul.appendChild(li);
+  });
+}
 ```
