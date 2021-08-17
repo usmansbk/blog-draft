@@ -159,20 +159,22 @@ One of the software design principles is striving for loosely coupled design bet
 
 ## Store
 
-We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy would be a TV. The electrical circuit is hidden inside the TV, and we only control it via the remote control (public method). This is called Data Encapsulation.
+We can achieve loose coupling by hiding our state tree and only accessing it via public methods.
+
+A good analogy would be a TV. The electrical circuits (state) are hidden inside the TV, and we only control it via the remote control (public method). This is called Data Encapsulation.
 
 This is achieved by closing the state tree in a function and returning an object with public methods to access the state. The returned object is called a **store**.
 
 ```js
 function createStore() {
-  // hidden inside this function
+  // hidden inside the function
   let state = {
     todos: [],
     books: [],
   };
 
+  // store object
   return {
-    // store object
   };
 }
 
