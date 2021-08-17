@@ -1009,6 +1009,8 @@ function renderTodos(todos) {
 }
 ```
 
+## Managing more state
+
 Currently, the app keeps track of only the todo items.
 
 Let's add the code to handle the Books state. The book section supports only two actions:
