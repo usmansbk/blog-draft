@@ -31,7 +31,7 @@ The final app should look like this:
 
 [screenshot](./app_screenshot.png)
 
-Add our code will be in a single HTML file
+All our code will be in a single HTML file
 
 ```html
 <!DOCTYPE html>
@@ -66,7 +66,7 @@ Add our code will be in a single HTML file
 
 ## State Tree
 
-Conceptually, there are two kinds of data in our application: Todos item objects and Books item objects.
+Conceptually, there are two kinds of data in our application: Todo items and Book items.
 
 A naive way of storing our application data would be declaring them as separate state variables.
 
@@ -92,7 +92,7 @@ let state = {
   todos: [],
   books: [],
 };
-let counter = 0; // Just a normal variable
+let counter = 0; // Just a normal loop couter
 ```
 
 The `state` variable is called a **State Tree**. A state tree is an object that stores all our application state.
@@ -101,7 +101,7 @@ There should be only one State Tree in an application ― A single centralized p
 
 ### Updating the State (Naive Approach)
 
-Let's start adding Todo items to our State by connecting it to our UI.
+Let's start adding Todo items to our State by hooking a `submit` event handler to the `add-todo` form.
 
 ```js
 // UI section
@@ -112,6 +112,11 @@ window.addEventListener("load", () => {
     event.preventDefault();
     const todoInput = todoForm.elements.todo;
     const text = todoInput.value;
+    const todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
   });
 });
 ```
@@ -122,7 +127,7 @@ Based on the requirements, each todo item should have these fields:
 - text: the text the user typed in
 - completed: a boolean flag
 
-A naive approach of adding items would be directly updating the state tree in the UI code.
+A naive approach of adding items would be directly updating the state in the UI code.
 
 ```js
 // Bad
@@ -139,7 +144,7 @@ todoForm.addEventListener("submit", (event) => {
 });
 ```
 
-This approach is bad because our UI code knows too much about our state tree. Imagine we later decided to change our state tree to this:
+This approach is bad because our UI code knows too much about our state tree. Imagine we later decided to change our state to this:
 
 ```js
 let state = {
@@ -148,7 +153,7 @@ let state = {
 };
 ```
 
-This will break our UI because it depends on `state.todos` being an array. We can say our UI is tightly coupled to our state, and tight coupling leads to bad code.
+This will break our UI because it depends on `todos` being an array. We can say our UI is tightly coupled to our state, and tight coupling leads to unmanageable code.
 
 One of the software design principles is striving for loosely coupled design between objects that interact. Two things are loosely coupled if they have very little knowledge of each other.
 
