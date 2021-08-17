@@ -728,10 +728,11 @@ function renderTodos(todos) {
   todos.forEach((todo) => {
     const li = document.createElement("li");
 
+    const text = document.createTextNode(todo.text);
     const removeButton = document.createElement("button");
     removeButton.innerText = "Remove";
 
-    li.appendChild(document.createTextNode(todo.text));
+    li.appendChild(text);
     li.appendChild(removeButton);
 
     ul.appendChild(li);
@@ -772,12 +773,12 @@ We can do that by dispatching a `DELETE_TODO` action whenever a button is clicke
 function renderTodos(todos) {
   const ul = document.getElementById("todos");
 
-  ul.innerHTML = ""; // Remove previous state items from DOM
+  ul.innerHTML = "";
 
-  // Add new state items to DOM
   todos.forEach((todo) => {
     const li = document.createElement("li");
 
+    const text = document.createTextNode(todo.text);
     const removeButton = document.createElement("button");
     removeButton.innerText = "Remove";
 
@@ -791,7 +792,7 @@ function renderTodos(todos) {
       console.log(store.getState());
     });
 
-    li.appendChild(document.createTextNode(todo.text));
+    li.appendChild(text);
     li.appendChild(removeButton);
 
     ul.appendChild(li);
@@ -883,19 +884,19 @@ function createStore() {
 }
 ```
 
-Now, we can DRY our UI code.
+Now that we've provided a way to subscribe for changes, we can go ahead and DRY our UI code.
 
 ```js
 // UI section
 function renderTodos(todos) {
   const ul = document.getElementById("todos");
 
-  ul.innerHTML = ""; // Remove previous state items
+  ul.innerHTML = "";
 
-  // Add new state items
   todos.forEach((todo) => {
     const li = document.createElement("li");
 
+    const text = document.createTextNode(todo.text);
     const removeButton = document.createElement("button");
     removeButton.innerText = "Remove";
     removeButton.addEventListener("click", () => {
@@ -907,7 +908,7 @@ function renderTodos(todos) {
       store.dispatch(action);
     });
 
-    li.appendChild(document.createTextNode(todo.text));
+    li.appendChild(text);
     li.appendChild(removeButton);
 
     ul.appendChild(li);
@@ -942,6 +943,5 @@ window.addEventListener("load", () => {
   store.subscribe(() => {
     console.log(store.getState().todos);
   });
-
 });
 ```

@@ -86,6 +86,7 @@
         todos.forEach((todo) => {
           const li = document.createElement("li");
 
+          const text = document.createTextNode(todo.text);
           const removeButton = document.createElement("button");
           removeButton.innerText = "Remove";
           removeButton.addEventListener("click", () => {
@@ -97,7 +98,7 @@
             store.dispatch(action);
           });
 
-          li.appendChild(document.createTextNode(todo.text));
+          li.appendChild(text);
           li.appendChild(removeButton);
 
           ul.appendChild(li);
