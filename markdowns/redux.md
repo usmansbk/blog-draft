@@ -755,8 +755,8 @@ window.addEventListener("load", () => {
       type: "ADD_TODO",
       todo,
     };
-
     store.dispatch(action);
+
     renderTodos(store.getState().todos);
     console.log(store.getState());
   });
@@ -811,9 +811,22 @@ removeButton.addEventListener("click", () => {
     type: "DELETE_TODO",
     id: todo.id,
   };
-
   store.dispatch(action);
+
   renderTodos(store.getState().todos);
   console.log(store.getState());
 });
 ```
+
+Notice these two lines of code:
+
+```js
+  renderTodos(store.getState().todos);
+  console.log(store.getState());
+```
+
+That's exactly what we did after dispatching `ADD_TODO` action. What happens when we dispach a `TOGGLE_TODO` or later dispatch book actions?
+
+We're basically repeating ourselves.
+
+This violates another principle ― Don't Repeat Yourself.
