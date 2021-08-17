@@ -258,17 +258,32 @@ window.addEventListener("load", () => {
 
 This looks clean and elegant, but my _code-sense_ is tingling, warning me about a possible future problem.
 
-From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new actions, such as filtering, sorting, swapping positions, etc.
+From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new actions.
 
-Invoking many store methods in our UI code increases the dependency between the UI and store. Remember, we should always strive for loose coupling.
+```js
+store.addTodo();
+store.deleteTodo();
+store.toggleTodo();
+
+store.addBook();
+store.deleteBook();
+
+store.filterTodos();
+store.sortTodos();
+store.swapTodos();
+store.deleteMultipleTodos();
+
+store.searchBooks();
+// The list keeps growing...
+```
+
+Invoking many store methods in our UI code increases the dependency between the UI and store, making it hard to manage our code. Remember, we should always strive for loose coupling.
 
 ## Actions
 
-Instead of calling different methods for different actions, we can create a single public method that takes an object as an argument.
+Instead of directly calling these methods in our UI, we can create a public method to handle calling them.
 
-This object will contain the type of action we would like to perform and any required data.
-
-The method will then delegate our request to the right action handlers.
+All we need to do is tell this method the type of action we would like to perform and it will take our request to the right action handler.
 
 ```js
 function createStore() {
