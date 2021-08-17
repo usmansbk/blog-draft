@@ -283,7 +283,7 @@ Invoking many store methods in our UI code increases the dependency between the 
 
 Instead of directly calling these methods in our UI, we can create a public method to handle calling them.
 
-All we need to do is tell this method the type of action we would like to perform and it will take our request to the right action handler.
+All we need to do is tell this method the type of action we would like to perform, and it will take our request to the right action handler.
 
 ```js
 function createStore() {
