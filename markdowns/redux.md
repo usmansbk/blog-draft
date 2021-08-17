@@ -825,7 +825,7 @@ Notice these two lines of code:
   console.log(store.getState());
 ```
 
-That's exactly what we did after dispatching `ADD_TODO` action. What happens when we dispach a `TOGGLE_TODO` or later dispatch book actions?
+That's exactly what we did after dispatching `ADD_TODO` action. What happens when we dispach a `TOGGLE_TODO` action or later dispatch book actions?
 
 We're basically repeating ourselves.
 
