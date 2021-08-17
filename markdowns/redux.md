@@ -29,7 +29,7 @@ As per tradition, we'll be building a simple list application.
 
 The final app should look like this:
 
-[screenshot](./app_screenshot.png)
+![screenshot](./imgs/redux-final.png)
 
 All our code will be in a single HTML file
 

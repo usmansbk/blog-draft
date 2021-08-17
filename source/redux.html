@@ -90,6 +90,33 @@
       const store = createStore();
 
       // UI section
+      function renderBooks(books) {
+        const ul = document.getElementById("books");
+
+        ul.innerHTML = ""; // Remove previous state items
+
+        // Add new state items
+        books.forEach((book) => {
+          const li = document.createElement('li');
+          const title = document.createTextNode(book.title);
+          const removeButton = document.createElement("button");
+          removeButton.innerText = "Remove";
+          removeButton.addEventListener("click", () => {
+            const action = {
+              type: "DELETE_BOOK",
+              id: book.id,
+            };
+
+            store.dispatch(action);
+          });
+
+          li.appendChild(title);
+          li.appendChild(removeButton);
+
+          ul.appendChild(li);
+        });
+      }
+
       function renderTodos(todos) {
         const ul = document.getElementById("todos");
 
@@ -170,6 +197,11 @@
 
         store.subscribe(() => {
           renderTodos(store.getState().todos);
+        });
+
+        // subscribe renderBooks
+        store.subscribe(() => {
+          renderBooks(store.getState().books);
         });
 
         store.subscribe(() => {
