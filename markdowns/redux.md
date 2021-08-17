@@ -459,9 +459,9 @@ By doing this, we've introduced another problem. Let's take a look at our `DELET
 todos.filter((todo) => todo.id !== action.id);
 ```
 
-The `ADD_TODO` and `TOGGLE_TODO` actions both modify the existing `todos` state while the `DELETE_TODO` doesn't.
+The `ADD_TODO` action modifies the existing `todos` state while the `DELETE_TODO` doesn't.
 
-Unlike the array `push` method, the `filter` method doesn't modify an array. Instead, it returns a new array of items that meet a certain criteria.
+Unlike the array `push` method, the `filter` method doesn't modify an array. Instead, it returns a new array of items that meet certain criteria.
 
 A naive way of fixing this would be to return the modified or new state whenever an action is performed, and assign it to `state.todos`.
 
@@ -550,9 +550,11 @@ console.log(squares2(arrOfNumbers)); // => [ 1, 256, 6561]
 
 This version returns a different result every time we call it with the same argument.
 
-Can you quickly predict the result after calling the function with the same argument a thousand times?
+Can you quickly predict the result after calling the function with the same argument ten times?
 
-In functional programming, `square` and `squares` are called **pure functions**.
+Predictable functions are easier to debug because we can easily trace back an error using the same argument.
+
+In functional programming, the first two functions, `square` and `squares`, are called **pure functions**.
 
 ### Pure Functions
 
@@ -562,7 +564,7 @@ By definition, pure functions:
 - Depend solely on the arguments passed into them
 - Do not produce any side effects, such as mutating external data or making API requests
 
-Our reducer is not pure because it modifies the state each time it is called. We need our application to be as predictable as possible.
+Our reducer is not pure because it modifies the state each time we add or toggle a todo. We need our application to be as predictable as possible.
 
 Let's go ahead and convert our reducer into a pure function by returning a new state each time an action is performed.
 
