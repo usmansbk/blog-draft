@@ -31,6 +31,8 @@ The final app should look like this:
 
 [screenshot](./app_screenshot.png)
 
+Add our code will be in a single HTML file
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
