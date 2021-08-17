@@ -256,7 +256,9 @@ window.addEventListener("load", () => {
 });
 ```
 
-From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new features.
+This looks clean and elegant, but my _code-sense_ is tingling, warning me about a possible future problem.
+
+From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new actions, such as filtering, sorting, swapping positions, etc.
 
 Invoking many store methods in our UI code increases the dependency between the UI and store. Remember, we should always strive for loose coupling.
 
