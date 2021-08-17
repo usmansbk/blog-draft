@@ -285,6 +285,10 @@ Instead of directly calling these methods in our UI, we can create a public meth
 
 All we need to do is tell this method the type of action we would like to perform, and it will take our request to the right action handler.
 
+This is similar to calling a dispatch rider. We give the rider our parcel with an address on it, and our rider will deliver the parcel to the address.
+
+Our store object will serve as the rider. The parcel will be an object containing the type of action to perform. We dispatch our rider (store) to deliver the parcel to the right handler by calling our new method. This method will be named `dispatch`.
+
 ```js
 function createStore() {
   let state = {
@@ -337,10 +341,12 @@ window.addEventListener("load", () => {
       completed: false,
     };
 
+    // Our parcel
     const action = {
       type: "ADD_TODO",
       todo,
     };
+
     store.dispatch(action);
   });
 });
