@@ -27,7 +27,7 @@ As per tradition, we'll be building a simple list application.
 - We should be able to delete items
 - Clicking a Todo item should mark it as completed
 
-The final app should look like this:
+The final app should look like this: :sweat_smile:
 
 ![screenshot](./imgs/redux-final.png)
 
