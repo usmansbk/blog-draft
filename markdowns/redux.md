@@ -10,7 +10,7 @@ In this tutorial, we're going to learn Redux by building a simple redux clone to
 
 The objective is to understand core Redux. Hence we'll be using only HTML and vanilla JavaScript (No React).
 
-Like all well-designed libraries and frameworks, Redux too makes use of design pattern (Observer Pattern) and follows the software design principles.
+Like all well-designed libraries and frameworks, Redux too makes use of design patterns (Observer Pattern) and follows the software design principles.
 
 For a gentle introduction to the Observer Pattern, check out my post, [To-Do List with Observer Pattern](https://dev.to/devusman/to-do-list-with-observer-pattern-1cl7), to gain a good mental model of the pattern.
 
@@ -62,7 +62,9 @@ The final app should look like this:
 
 ## State Tree
 
-Conceptually, there are two kinds of data in our application: Todos item objects and Books item objects. A naive way of storing our application data would be declaring them as separate variables.
+Conceptually, there are two kinds of data in our application: Todos item objects and Books item objects.
+
+A naive way of storing our application data would be declaring them as separate state variables.
 
 ```js
 let todos = [];
@@ -86,10 +88,10 @@ let state = {
   todos: [],
   books: [],
 };
-let counter = 0; // Just a useless variable
+let counter = 0; // Just a normal variable
 ```
 
-The `state` variable is called a **State Tree**. A state tree is an object that stores all our application data.
+The `state` variable is called a **State Tree**. A state tree is an object that stores all our application state.
 
 There should be only one State Tree in an application ― A single centralized place to contain the global state of our application.
 
@@ -137,7 +139,7 @@ This approach is bad because our UI code knows too much about our state tree. Im
 
 ```js
 let state = {
-  todos: {}, // Now an object literal
+  todos: {}, // No longer an array
   books: [],
 };
 ```
@@ -148,7 +150,7 @@ One of the software design principles is striving for loosely coupled design bet
 
 ## Store
 
-We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy would be a TV. The electrical circuit is hidden inside the TV, and we only control it via remote control (public method). This is called Data Encapsulation.
+We can achieve loose coupling by hiding our state tree and only accessing it via public methods. A good analogy would be a TV. The electrical circuit is hidden inside the TV, and we only control it via the remote control (public method). This is called Data Encapsulation.
 
 This is achieved by closing the state tree in a function and returning an object with public methods to access the state. The returned object is called a **store**.
 
@@ -184,7 +186,7 @@ window.addEventListener("load", () => {
 });
 ```
 
-Doing this will prevent our UI code from directly accessing our state tree, and all interactions with the state will be done via the store object methods. Keeping the state and view code loosely coupled.
+Doing this will prevent our UI code from directly accessing our state tree, and all interactions with the state will be done via the store. Keeping the state and UI loosely coupled.
 
 ### Updating the State (OOP Approach)
 
@@ -243,7 +245,7 @@ window.addEventListener("load", () => {
 });
 ```
 
-From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new features (pun intended).
+From the looks of it, It seems we'll be needing new methods for the book state later. In fact, we can expect more methods in the future to support new features.
 
 Invoking many store methods in our UI code increases the dependency between the UI and store. Remember, we should always strive for loose coupling.
 
@@ -320,11 +322,11 @@ An action encapsulates a request to do something (like add or delete todo) on th
 
 The next problem is, the more methods we add to our store function, the more it will grow. Making it harder to manage.
 
-We can solve this by following another design principle ― Separation of concerns. The job of figuring out the right action handler should be moved to a different function.
+We can solve this by following another design principle ― Separation of concerns. The idea is to move the job of delegating action handlers to a different function outside the store function.
 
 ## Updating the state (Reducer approach)
 
-Let's start by abstracting the Todo actions logic from the `createStore` function into a new function.
+Let's start by abstracting the Todo action handlers from the store function into a new function.
 
 ```js
 function todoReducer(state, action) {
@@ -386,7 +388,7 @@ function todoReducer(state, action) {
 
 Now, we've made our `createStore` function more maintainable by separating concerns, but we've also introduced an old problem again.
 
-Our reducer knows way too much about our state ― _Hello, Tight coupling_. This makes it easier to introduce bugs like this::
+Our reducer knows too much about our state ― Tight coupling. This makes it easy to introduce bugs like this:
 
 ```js
 // Fire spitting bug
@@ -396,7 +398,7 @@ if (action.type === "DELETE_TODO") {
 }
 ```
 
-We can prevent this by passing only the todos state as an argument to the reducer function. Thereby, forcing it to be responsible for only todos state.
+We can prevent this by passing only the todos state as an argument to the reducer function.
 
 ```js
 function todoReducer(todos, action) {
@@ -425,9 +427,9 @@ todos.filter((todo) => todo.id !== action.id);
 
 The `ADD_TODO` and `TOGGLE_TODO` actions both modify the existing `todos` state while the `DELETE_TODO` doesn't.
 
-Unlike the array `push` method, the `filter` method doesn't modify an array. Instead, it returns a new array of items that meet a certain criteria. This prevents our state from being modified.
+Unlike the array `push` method, the `filter` method doesn't modify an array. Instead, it returns a new array of items that meet a certain criteria.
 
-A naive way of fixing this would be to return the modified and new state whenever an action is performed and assign it to the `todos` state.
+A naive way of fixing this would be to return the modified or new state whenever an action is performed, and assign it to `state.todos`.
 
 ```js
 // returning the modified and new state
