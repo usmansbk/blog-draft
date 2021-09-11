@@ -49,3 +49,5 @@ You then extract assets using CSS properties like this:
 This is a great approach as long as you know the exact location and dimensions of each image.
 
 Check out my Instagram clone where I used the spritesheet approach to create the icons.
+
+[Live Link](https://frosty-jang-51ab28.netlify.app/)
