@@ -46,6 +46,6 @@ You then extract assets using CSS properties like this:
 <span class="asset black-pad-lock-icon"></span>
 ```
 
-This is a great approach as long as you know the exact location of each image.
+This is a great approach as long as you know the exact location and dimensions of each image.
 
 Check out my Instagram clone where I used the spritesheet approach to create the icons.
